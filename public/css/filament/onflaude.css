@@ -1,0 +1,244 @@
+.of-welcome {
+    background: linear-gradient(135deg, #003893 0%, #0097D7 100%);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 8px;
+}
+
+.of-welcome__inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.of-welcome__icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.of-welcome__body {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.of-welcome__title {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.of-welcome__desc {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.of-welcome__desc a {
+    color: white;
+    text-decoration: underline;
+}
+
+.of-welcome__dismiss {
+    color: rgba(255,255,255,0.7);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.of-welcome__dismiss:hover {
+    color: white;
+}
+
+.of-welcome__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.of-welcome__btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+}
+
+.of-welcome__btn:hover {
+    background: rgba(255,255,255,0.35);
+    color: white;
+}
+
+/*-----------------------------------------------------------*/
+/* ===== SIDEBAR ============================================*/
+/*-----------------------------------------------------------*/
+
+.fi-sidebar {
+    background-color: #dcebf2 !important;
+    border-right: none !important;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.fi-sidebar-header {
+    background-color: #dcebf2 !important;
+    border-bottom: none !important;
+}
+
+/* all horizontal lines in the sidebar */
+.fi-sidebar-nav hr,
+.fi-sidebar hr,
+.fi-sidebar-group + .fi-sidebar-group,
+.fi-sidebar-nav > * + * {
+    border: none !important;
+}
+
+/* Text and icons - dark */
+.fi-sidebar-nav .fi-sidebar-item-label {
+    color: var(--gray-950) !important;
+}
+
+.fi-sidebar-nav .fi-sidebar-item-icon {
+    color: var(--gray-950) !important;
+}
+
+/* Active menu item */
+.fi-sidebar-item-button.fi-active {
+    background-color: #e8f0fd !important;
+    border-left: 3px solid #0097D7 !important;
+    border-radius: 0 8px 8px 0 !important;
+}
+
+.fi-sidebar-item-button.fi-active .fi-sidebar-item-label {
+    color: #3c6d9f !important;
+    font-weight: 600 !important;
+}
+
+.fi-sidebar-item-button.fi-active .fi-sidebar-item-icon {
+    color: #3c6d9f !important;
+}
+
+/* hide theme switcher */
+.fi-user-menu-theme-switcher,
+button[aria-label="Toggle dark mode"],
+button[aria-label="Toggle light mode"] {
+    display: none !important;
+}
+
+/* Button for top bar */
+.fi-user-avatar {
+    background-color: #0097D7 !important;
+}
+
+/* Hover */
+.fi-sidebar-item-button:hover:not(.fi-active) {
+    background-color: #0097D7 !important;
+    border-radius: 8px !important;
+}
+
+.fi-sidebar-item-button:hover:not(.fi-active) .fi-sidebar-item-label {
+    color: white !important;
+}
+
+.fi-sidebar-item-button:hover:not(.fi-active) .fi-sidebar-item-icon {
+    color: white !important;
+}
+
+
+/* Active item - maximum specificity */
+nav ul li .fi-sidebar-item-button.fi-active,
+.fi-sidebar-nav .fi-sidebar-item-active .fi-sidebar-item-button,
+li.fi-sidebar-item.fi-active > a,
+li.fi-sidebar-item-active a.fi-sidebar-item-button {
+    /* background-color: #e8f0fd !important; */
+    border-left: 3px solid #0097D7 !important;
+    color: #003E97 !important;
+}
+
+/* (POSTS, PAGES) */
+.fi-btn-color-primary,
+.fi-btn[class*="primary"] {
+    background-color: #0097D7 !important;
+    border-color: #0097D7 !important;
+}
+
+.fi-btn-color-primary:hover,
+.fi-btn[class*="primary"]:hover {
+    background-color: #0079b0 !important;
+    border-color: #0079b0 !important;
+}
+
+/* Collapse arrow */
+.fi-sidebar-group-collapse-button svg {
+    color: #6b7280 !important;
+}
+
+/*-----------------------------------------------------------*/
+/* ===== MAIN CONTENT AREA ==================================*/
+/*-----------------------------------------------------------*/
+
+/* Background for the entire area */
+.fi-main,
+.fi-body,
+body {
+    background-color: #f2f2f4 !important;
+}
+
+.fi-main-ctn {
+    background-color: #f2f2f4 !important;
+    min-height: 100vh !important;
+}
+
+/* Topbar */
+.fi-topbar {
+    background-color: #dcebf2 !important;
+    border-bottom: none !important;
+}
+
+.fi-topbar nav,
+.fi-topbar button,
+.fi-topbar a {
+    color: #0097D7 !important;
+}
+
+/*-----------------------------------------------------------*/
+/* ===== WELCOME BANNER =====================================*/
+/*-----------------------------------------------------------*/
+
+.fi-wi-welcome {
+    width: 100% !important;
+}
+
+
+.fi-sidebar-header {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+.fi-sidebar .fi-sidebar-nav > div > div {
+    border: none !important;
+}
+
+.fi-sidebar {
+    z-index: 40 !important;
+}
+
+.fi-sidebar {
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.08) !important;
+}

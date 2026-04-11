@@ -28,7 +28,7 @@ class ThemeServiceProvider extends ServiceProvider
             $assetsSource = $themePath . '/assets';
             $assetsDest   = public_path("themes/{$theme}");
 
-            if (is_dir($assetsSource) && !is_dir($assetsDest)) {
+            if (is_dir($assetsSource)) {
                 File::copyDirectory($assetsSource, $assetsDest);
             }
 

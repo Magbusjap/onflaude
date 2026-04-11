@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.01 10.23">
+<svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10.63 10.9">
   <defs>
     <style>
       .cls-1 {
-        fill: #465a77;
         font-family: Montserrat-Bold, Montserrat;
         font-size: 6.74px;
         font-weight: 700;
       }
 
-      .cls-2 {
-        fill: #4aafbe;
+      .cls-1, .cls-2 {
+        fill: #43538e;
+      }
+
+      .cls-3 {
+        fill: #0997d6;
       }
     </style>
   </defs>
   <g id="_Слой_1-2" data-name="Слой 1">
-    <circle class="cls-2" cx="4.51" cy="4.51" r="4.51"/>
-    <text class="cls-1" transform="translate(2.51 6.97)"><tspan x="0" y="0">F</tspan></text>
+    <rect class="cls-2" x="0" y="0" width="10.63" height="10.46" rx="5.23" ry="5.23"/>
+    <circle class="cls-3" cx="5.28" cy="5.16" r="4.51"/>
+    <text class="cls-1" transform="translate(3.2 7.64)"><tspan x="0" y="0">F</tspan></text>
   </g>
 </svg>
