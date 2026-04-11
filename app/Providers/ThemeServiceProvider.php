@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\File;
 
 class ThemeServiceProvider extends ServiceProvider
 {
@@ -15,18 +16,24 @@ class ThemeServiceProvider extends ServiceProvider
     {
         try {
             $theme = option('active_theme', 'default');
-            $viewsPath = base_path("themes/{$theme}/views");
+            $themePath = base_path("themes/{$theme}");
+            $viewsPath = $themePath . '/views';
 
             if (is_dir($viewsPath)) {
-                //Theme views will be loaded with the 'theme::'
-                //  namespace, e.g. view('theme::index')
                 $this->loadViewsFrom($viewsPath, 'theme');
-
-                // standard views will be loaded without namespace, e.g. view('index')
                 view()->prependNamespace('frontend', $viewsPath);
             }
+
+            // Публикуем assets темы в public/themes/{theme}/
+            $assetsSource = $themePath . '/assets';
+            $assetsDest   = public_path("themes/{$theme}");
+
+            if (is_dir($assetsSource) && !is_dir($assetsDest)) {
+                File::copyDirectory($assetsSource, $assetsDest);
+            }
+
         } catch (\Exception $e) {
-            // Default to 'default' theme if there's an error loading the active theme
+            // БД недоступна при старте — молча используем дефолт
         }
     }
 }

@@ -23,6 +23,12 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->brandLogo(asset('themes/default/onflaude-logo.png'))
+            ->brandLogoHeight('36px')
+            ->favicon(asset('themes/default/onflaude-favicon.svg'))
+            ->colors([
+                'primary' => Color::hex('#003893'),
+            ])
             ->default()
             ->id('admin')
             ->path(option('admin_path', 'admin'))

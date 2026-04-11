@@ -10,9 +10,6 @@ Route::get('/', [FrontendController::class, 'home'])->name('home');
 Route::get('/blog', [FrontendController::class, 'posts'])->name('posts');
 Route::get('/blog/{slug}', [FrontendController::class, 'post'])->name('post');
 
-// Pages — уuniversal catch-all, last
-Route::get('/{slug}', [FrontendController::class, 'page'])->name('page');
-
 // fixed URL, never changes
 Route::get('/onflaude-recovery', function () {
     return view('recovery');
@@ -37,3 +34,8 @@ Route::post('/onflaude-recovery', function (\Illuminate\Http\Request $request) {
         'Admin path reset to: /' . $request->new_path
     );
 })->name('recovery.post');
+
+// Pages — уuniversal catch-all, last
+Route::get('/{slug}', [FrontendController::class, 'page'])->name('page');
+
+
