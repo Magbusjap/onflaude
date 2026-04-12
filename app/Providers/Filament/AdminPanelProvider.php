@@ -52,6 +52,31 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->renderHook('panels::sidebar.footer', fn (): string => '
+                <div class="of-sidebar-toggle">
+                    <button onclick="ofToggleSidebar()" title="Collapse menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 6h18M3 18h18"/>
+                        </svg>
+                        <span class="of-sidebar-toggle-label">Collapse menu</span>
+                    </button>
+                </div>
+            ')
+            ->renderHook('panels::sidebar.nav.start', fn (): string => '
+                <img
+                    src="' . asset('themes/default/onflaude-favicon.svg') . '"
+                    class="fi-brand-favicon"
+                    style="width: 2.5rem; height: 2.5rem; margin: 0.5rem auto;"
+                    alt="OnFlaude"
+                >
+            ')
+            ->renderHook('panels::head.end', fn (): string =>
+                '<link rel="stylesheet" href="' . asset('css/filament/onflaude.css') . '">'
+            )
+            ->renderHook('panels::body.end', fn (): string =>
+                '<script src="' . asset('js/filament/onflaude.js') . '?v=' . filemtime(public_path('js/filament/onflaude.js')) . '"></script>'
+            )
             ->authMiddleware([
                 Authenticate::class,
             ]);

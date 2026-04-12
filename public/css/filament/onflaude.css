@@ -94,6 +94,7 @@
     background-color: #dcebf2 !important;
     border-right: none !important;
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+    transition: width 0.2s ease !important;
 }
 
 .fi-sidebar-header {
@@ -336,4 +337,148 @@ body {
 
 .of-screen-options-toggle .of-screen-options-btn:hover {
     background: #f8f9fa !important;
+}
+
+/*-----------------------------------------------------------*/
+/* ===== Collapsible Sidebar ================================*/
+/*-----------------------------------------------------------*/
+
+.fi-brand-favicon {
+    display: none !important;
+}
+
+.of-sidebar-toggle {
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.of-sidebar-toggle button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.of-sidebar-toggle button:hover {
+    color: #003893;
+}
+
+/* === Collapsed state === */
+.of-sidebar-collapsed .fi-sidebar {
+    width: 4.5rem !important;
+    min-width: 4.5rem !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-nav {
+    padding: 1rem 0.5rem !important;
+    overflow-x: visible !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-header {
+    padding: 0 !important;
+    justify-content: center !important;
+}
+
+.of-sidebar-collapsed .fi-logo {
+    display: none !important;
+}
+
+.of-sidebar-collapsed .fi-brand-favicon {
+    display: block !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-item-label,
+.of-sidebar-collapsed .fi-sidebar-group-label,
+.of-sidebar-collapsed .fi-sidebar-group-collapse-button {
+    display: none !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-item-button {
+    gap: 0 !important;
+    padding: 0.625rem !important;
+    justify-content: center !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-group-button {
+    gap: 0 !important;
+    padding: 0.625rem !important;
+    justify-content: center !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-group-items {
+    display: none !important;
+}
+
+.of-sidebar-collapsed .of-sidebar-toggle-label {
+    display: none !important;
+}
+
+/* Tooltip */
+.of-sidebar-collapsed .fi-sidebar-item {
+    position: relative !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-item:hover::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 4.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1e293b;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.of-sidebar-collapsed .fi-sidebar-item-button.fi-active {
+    border-left: none !important;
+    border-radius: 8px !important;
+    background-color: #e8f0fd !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-nav-groups {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-item {
+    overflow: visible !important;
+}
+
+.of-sidebar-collapsed a.fi-sidebar-item-button {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-item {
+    width: 100% !important;
+}
+
+.of-sidebar-collapsed a.fi-sidebar-item-button {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.of-sidebar-collapsed .fi-sidebar-group-button {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
