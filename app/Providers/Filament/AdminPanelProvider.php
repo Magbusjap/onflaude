@@ -28,6 +28,10 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('themes/default/onflaude-logo.png'))
             ->brandLogoHeight('36px')
             ->favicon(asset('themes/default/onflaude-favicon.svg'))
+            ->renderHook(
+                'panels::page.start',
+                fn (): string => '',
+            )
             ->colors([
                 'primary' => Color::hex('#003893'),
             ])
