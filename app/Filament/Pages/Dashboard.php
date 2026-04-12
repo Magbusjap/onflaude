@@ -14,4 +14,9 @@ class Dashboard extends \Filament\Pages\Dashboard
             StatsOverview::class,
         ];
     }
+
+    public function getColumns(): int|array
+    {
+        return 1;
+    }
 }

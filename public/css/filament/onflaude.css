@@ -225,6 +225,14 @@ body {
     width: 100% !important;
 }
 
+.of-welcome__subtitle {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 2px 0 6px;
+}
 
 .fi-sidebar-header {
     border-bottom: none !important;

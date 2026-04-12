@@ -18,6 +18,11 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'role',
         'welcome_dismissed',
+        'morning_start',
+        'afternoon_start',
+        'evening_start',
+        'night_start',
+        'timezone',
     ];
 
     protected $hidden = [

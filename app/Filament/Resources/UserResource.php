@@ -42,11 +42,47 @@ class UserResource extends Resource
 
                 Forms\Components\TextInput::make('password')
                     ->password()
+                    ->autocomplete('new-password')
                     ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
                     ->dehydrated(fn ($state) => filled($state))
                     ->required(fn (string $operation) => $operation === 'create')
                     ->maxLength(255)
                     ->label(fn (string $operation) => $operation === 'create' ? 'Password' : 'New Password (leave blank to keep)'),
+                Forms\Components\Section::make('Time Preferences')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Select::make('timezone')
+                            ->label('Timezone')
+                            ->options(function () {
+                                $zones = [];
+                                foreach (timezone_identifiers_list() as $tz) {
+                                    $region = explode('/', $tz)[0];
+                                    $zones[$region][$tz] = $tz;
+                                }
+                                return $zones;
+                            })
+                            ->searchable()
+                            ->default('Asia/Yekaterinburg'),
+
+                        Forms\Components\Select::make('morning_start')
+                            ->label('Morning starts at')
+                            ->options(array_combine(range(3, 10), array_map(fn($h) => "{$h}:00", range(3, 10))))
+                            ->default(5),
+
+                        Forms\Components\Select::make('afternoon_start')
+                            ->label('Afternoon starts at')
+                            ->options(array_combine(range(10, 15), array_map(fn($h) => "{$h}:00", range(10, 15))))
+                            ->default(12),
+
+                        Forms\Components\Select::make('evening_start')
+                            ->label('Evening starts at')
+                            ->options(array_combine(range(15, 22), array_map(fn($h) => "{$h}:00", range(15, 22))))
+                            ->default(18),
+                        Forms\Components\Select::make('night_start')
+                            ->label('Night starts at')
+                            ->options(array_combine(range(20, 23), array_map(fn($h) => "{$h}:00", range(20, 23))))
+                            ->default(22),
+                    ]),
             ]);
     }
 
