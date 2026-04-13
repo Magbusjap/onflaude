@@ -27,6 +27,7 @@ class Settings extends Page
             'posts_per_page'   => option('posts_per_page', '10'),
             'admin_path'       => option('admin_path', 'admin'),
             'active_theme'     => option('active_theme', 'default'),
+            'site_favicon'     => option('site_favicon', ''),
         ]);
     }
 
@@ -48,6 +49,17 @@ class Settings extends Page
                                     ->label('Site Description / Tagline')
                                     ->rows(3)
                                     ->maxLength(500),
+
+                                Forms\Components\FileUpload::make('site_favicon')
+                                    ->label('Site Icon (Favicon)')
+                                    ->helperText('Square image, minimum 512×512px. Used in browser tabs, bookmarks and admin panel.')
+                                    ->image()
+                                    ->imagePreviewHeight('80')
+                                    ->acceptedFileTypes(['image/png', 'image/svg+xml', 'image/x-icon', 'image/webp'])
+                                    ->disk('public')
+                                    ->directory('favicon')
+                                    ->visibility('public')
+                                    ->maxSize(2048),
 
                                 Forms\Components\TextInput::make('site_url')
                                     ->label('Site URL')
@@ -108,6 +120,7 @@ class Settings extends Page
         set_option('posts_per_page',   $data['posts_per_page'],   'general');
         set_option('active_theme',     $data['active_theme'],     'appearance');
         set_option('admin_path',       $newAdminPath,             'system');
+        set_option('site_favicon',     $data['site_favicon'],     'general');
 
         //If the admin_path has changed, redirect to the new URL
         if ($oldAdminPath !== $newAdminPath) {

@@ -27,7 +27,11 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandLogo(asset('themes/default/onflaude-logo.png'))
             ->brandLogoHeight('36px')
-            ->favicon(asset('themes/default/onflaude-favicon.svg'))
+            ->favicon(
+                option('site_favicon') 
+                    ? asset('storage/' . option('site_favicon'))
+                    : asset('themes/default/onflaude-favicon.svg')
+            )
             ->renderHook(
                 'panels::page.start',
                 fn (): string => '',
@@ -35,9 +39,6 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#003893'),
             ])
-            ->renderHook('panels::head.end', fn () =>
-                '<link rel="stylesheet" href="' . asset('css/filament/onflaude.css') . '">'
-            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
@@ -72,10 +73,15 @@ class AdminPanelProvider extends PanelProvider
                 >
             ')
             ->renderHook('panels::head.end', fn (): string =>
+                '<link rel="stylesheet" href="' . asset('css/filament/index.css') . '?v=' . 
+                filemtime(public_path('css/filament/index.css')) . '">' .
                 '<link rel="stylesheet" href="' . asset('css/filament/onflaude.css') . '">'
             )
             ->renderHook('panels::body.end', fn (): string =>
                 '<script src="' . asset('js/filament/onflaude.js') . '?v=' . filemtime(public_path('js/filament/onflaude.js')) . '"></script>'
+            )
+            ->renderHook('panels::topbar.start', fn (): string => 
+                view('filament.topbar.left')->render()
             )
             ->authMiddleware([
                 Authenticate::class,
