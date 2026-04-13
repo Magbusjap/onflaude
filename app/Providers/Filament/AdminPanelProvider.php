@@ -83,6 +83,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook('panels::topbar.start', fn (): string => 
                 view('filament.topbar.left')->render()
             )
+            ->globalSearch(true)
+            ->globalSearchKeyBindings(['ctrl+k', 'cmd+k'])
             ->authMiddleware([
                 Authenticate::class,
             ]);

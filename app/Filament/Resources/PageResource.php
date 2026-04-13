@@ -10,9 +10,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use App\Filament\Traits\HasGlobalSearch;
 
 class PageResource extends Resource
 {
+    use HasGlobalSearch;
+
     protected static ?string $model = Page::class;
     protected static ?string $navigationIcon = 'heroicon-o-document';
     protected static ?string $navigationGroup = 'Pages';
@@ -162,5 +166,10 @@ class PageResource extends Resource
             'create' => Pages\CreatePage::route('/create'),
             'edit'   => Pages\EditPage::route('/{record}/edit'),
         ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'slug', 'excerpt'];
     }
 }

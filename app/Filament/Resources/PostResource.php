@@ -12,9 +12,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use App\Filament\Traits\HasGlobalSearch;
 
 class PostResource extends Resource
 {
+    use HasGlobalSearch;
+
     protected static ?string $model = Post::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationGroup = 'Posts';
@@ -160,5 +164,10 @@ class PostResource extends Resource
             'create' => Pages\CreatePost::route('/create'),
             'edit'   => Pages\EditPost::route('/{record}/edit'),
         ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'slug', 'excerpt'];
     }
 }
