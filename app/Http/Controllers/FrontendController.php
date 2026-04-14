@@ -45,12 +45,12 @@ class FrontendController extends Controller
     public function category(string $slug)
     {
         $category = \App\Models\Category::where('slug', $slug)->firstOrFail();
-        
+
         $posts = Post::where('status', 'published')
             ->whereHas('categories', fn($q) => $q->where('slug', $slug))
             ->with(['author', 'categories'])
             ->orderBy('published_at', 'desc')
-            ->paginate(10);
+            ->paginate(option('posts_per_page', 10));
 
         return view('frontend.category', compact('category', 'posts'));
     }
@@ -63,7 +63,7 @@ class FrontendController extends Controller
             ->whereHas('tags', fn($q) => $q->where('slug', $slug))
             ->with(['author', 'categories'])
             ->orderBy('published_at', 'desc')
-            ->paginate(10);
+            ->paginate(option('posts_per_page', 10));
 
         return view('frontend.tag', compact('tag', 'posts'));
     }

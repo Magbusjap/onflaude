@@ -8,7 +8,8 @@
     @forelse($posts as $post)
         <article class="border-b border-gray-200 py-8">
             <h2 class="text-2xl font-semibold mb-2">
-                <a href="/blog/{{ $post->slug }}" class="text-[#003893] hover:text-[#0097D7]">
+                <a href="{{ route('post', $post->slug) }}"
+                    class="text-[#003893] hover:text-[#0097D7]">>
                     {{ $post->title }}
                 </a>
             </h2>
@@ -18,17 +19,20 @@
                     · {{ $post->author->name }}
                 @endif
                 @if($post->categories->count())
-                    ·
-                    @foreach($post->categories as $category)
-                        <span class="text-[#0097D7]">{{ $category->name }}</span>
-                    @endforeach
+                    <span>
+                        @foreach($post->categories as $category)
+                            <a href="{{ route('category', $category->slug) }}" class="text-[#0097D7] hover:underline">
+                                {{ $category->name }}
+                            </a>
+                        @endforeach
+                    </span>
                 @endif
             </div>
             @if($post->excerpt)
                 <p class="text-gray-600">{{ $post->excerpt }}</p>
             @endif
-            <a href="/blog/{{ $post->slug }}"
-               class="inline-block mt-4 text-sm text-[#0097D7] hover:underline">
+            <a href="{{ route('post', $post->slug) }}" 
+                class="inline-block mt-4 text-sm text-[#0097D7] hover:underline">
                 Read more →
             </a>
         </article>
