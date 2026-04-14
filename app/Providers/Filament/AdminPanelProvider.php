@@ -78,12 +78,14 @@ class AdminPanelProvider extends PanelProvider
                 '<link rel="stylesheet" href="' . asset('css/filament/onflaude.css') . '">'
             )
             ->renderHook('panels::body.end', fn (): string =>
-                '<script src="' . asset('js/filament/onflaude.js') . '?v=' . filemtime(public_path('js/filament/onflaude.js')) . '"></script>'
+                '<script src="' . asset('js/filament/onflaude.js') . '?v=' . filemtime(public_path('js/filament/onflaude.js')) . '"></script>' .
+                '<script type="module" src="' . asset('js/filament/index.js') . '?v=' . filemtime(public_path('js/filament/index.js')) . '"></script>'
             )
             ->renderHook('panels::topbar.start', fn (): string => 
                 view('filament.topbar.left')->render()
             )
             ->globalSearch(true)
+            ->viteTheme('resources/css/filament/admin/theme.css', 'build/filament')
             ->globalSearchKeyBindings(['ctrl+k', 'cmd+k'])
             ->authMiddleware([
                 Authenticate::class,

@@ -4,14 +4,22 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "build:filament": "vite build --config vite.filament.config.js",
+        "build:all": "concurrently \"npm run build\" \"npm run build:filament\"",
+        "dev": "vite",
+        "dev:filament": "vite --config vite.filament.config.js"
     },
     "devDependencies": {
-        "@tailwindcss/typography": "^0.5.0-alpha.3",
+        "@tailwindcss/forms": "^0.5.11",
+        "@tailwindcss/typography": "^0.5.19",
         "@tailwindcss/vite": "^4.0.0",
+        "autoprefixer": "^10.4.27",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^2.0.0",
+        "postcss": "^8.5.9",
+        "postcss-nesting": "^14.0.0",
+        "tailwindcss": "^3.4.19",
         "vite": "^7.0.7"
     }
 }
