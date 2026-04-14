@@ -42,6 +42,32 @@ class FrontendController extends Controller
         return view('frontend.post', compact('post'));
     }
 
+    public function category(string $slug)
+    {
+        $category = \App\Models\Category::where('slug', $slug)->firstOrFail();
+        
+        $posts = Post::where('status', 'published')
+            ->whereHas('categories', fn($q) => $q->where('slug', $slug))
+            ->with(['author', 'categories'])
+            ->orderBy('published_at', 'desc')
+            ->paginate(10);
+
+        return view('frontend.category', compact('category', 'posts'));
+    }
+
+    public function tag(string $slug)
+    {
+        $tag = \App\Models\Tag::where('slug', $slug)->firstOrFail();
+
+        $posts = Post::where('status', 'published')
+            ->whereHas('tags', fn($q) => $q->where('slug', $slug))
+            ->with(['author', 'categories'])
+            ->orderBy('published_at', 'desc')
+            ->paginate(10);
+
+        return view('frontend.tag', compact('tag', 'posts'));
+    }
+
     // Slug = URL friendly string, e.g. "about-us", "contact", "services"
     public function page(string $slug)
     {

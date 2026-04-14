@@ -1,14 +1,15 @@
-@import 'tailwindcss';
-@plugin '@tailwindcss/typography';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@import './frontend/admin-bar.css';
+@import './frontend/base.css';
+@import './frontend/layout.css';
+@import './frontend/posts.css';
+@import './frontend/components.css';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --color-onflaude-dark: #003893;
     --color-onflaude-light: #0097D7;
+    --color-onflaude-sidebar: #DCEBF2;
 }

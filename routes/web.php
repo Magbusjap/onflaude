@@ -35,6 +35,9 @@ Route::post('/onflaude-recovery', function (\Illuminate\Http\Request $request) {
     );
 })->name('recovery.post');
 
+Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('category');
+Route::get('/tag/{slug}', [FrontendController::class, 'tag'])->name('tag');
+
 // Pages — уuniversal catch-all, last
 Route::get('/{slug}', [FrontendController::class, 'page'])->name('page');
 
