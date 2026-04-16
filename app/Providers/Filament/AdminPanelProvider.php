@@ -87,6 +87,9 @@ class AdminPanelProvider extends PanelProvider
             ->globalSearch(true)
             ->viteTheme('resources/css/filament/admin/theme.css', 'build/filament')
             ->globalSearchKeyBindings(['ctrl+k', 'cmd+k'])
+            ->pages([
+                \App\Filament\Pages\MediaLibrary::class,
+            ])
             ->authMiddleware([
                 Authenticate::class,
             ]);

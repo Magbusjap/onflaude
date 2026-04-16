@@ -16,6 +16,7 @@ class MediaResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $navigationLabel = 'Media';
     protected static ?int $navigationSort = 5;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -31,8 +32,17 @@ class MediaResource extends Resource
                                     ->required()
                                     ->disk('public')
                                     ->directory('media')
-                                    ->preserveFilenames()
-                                    ->maxSize(10240)
+                                    ->maxSize(65536) 
+                                    ->acceptedFileTypes([
+                                        'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
+                                        'application/pdf',
+                                        'application/msword',
+                                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                        'application/vnd.ms-excel',
+                                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                        'video/mp4', 'video/webm',
+                                        'audio/mpeg', 'audio/wav', 'audio/ogg',
+                                    ])
                                     ->columnSpanFull(),
                                 Forms\Components\TextInput::make('name')
                                     ->required()

@@ -10,7 +10,8 @@ class Media extends Model
 {
     protected $fillable = [
         'name',
-        'file_name',
+        'filename',
+        'original_name',
         'mime_type',
         'disk',
         'path',
@@ -18,33 +19,44 @@ class Media extends Model
         'alt',
         'title',
         'caption',
+        'description',
         'folder',
         'uploaded_by',
         'ext',
         'width',
         'height',
+        'alt_text',
     ];
-
-    public function uploadedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'uploaded_by');
-    }
-
-    public function getUrlAttribute(): string
-    {
-        return Storage::disk($this->disk)->url($this->path);
-    }
-
-    public function getHumanSizeAttribute(): string
-    {
-        $bytes = $this->size;
-        if ($bytes >= 1048576) return round($bytes / 1048576, 2) . ' MB';
-        if ($bytes >= 1024) return round($bytes / 1024, 2) . ' KB';
-        return $bytes . ' B';
-    }
 
     public function isImage(): bool
     {
         return str_starts_with($this->mime_type, 'image/');
     }
+
+    public function getUrlAttribute(): string
+    {
+        return route('media.serve', ['path' => $this->path]);
+    }
+
+    public function uploader()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'uploaded_by');
+    }
+
+    public function getHumanSizeAttribute(): string
+    {
+        $bytes = $this->size;
+        if ($bytes < 1024) return "{$bytes} B";
+        if ($bytes < 1048576) return round($bytes / 1024, 1) . ' KB';
+        return round($bytes / 1048576, 1) . ' MB';
+    }
+
+    public function getTypeAttribute(): string
+    {
+        if ($this->isImage()) return 'image';
+        if (str_starts_with($this->mime_type, 'video/')) return 'video';
+        if (str_starts_with($this->mime_type, 'audio/')) return 'audio';
+        return 'document';
+    }
+
 }

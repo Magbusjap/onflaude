@@ -38,7 +38,12 @@ Route::post('/onflaude-recovery', function (\Illuminate\Http\Request $request) {
 Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('category');
 Route::get('/tag/{slug}', [FrontendController::class, 'tag'])->name('tag');
 
+Route::get('/media/{path}', [\App\Http\Controllers\MediaController::class, 'serve'])
+    ->where('path', '.*')
+    ->name('media.serve');
+    
 // Pages — уuniversal catch-all, last
 Route::get('/{slug}', [FrontendController::class, 'page'])->name('page');
+
 
 
