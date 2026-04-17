@@ -38,6 +38,10 @@ Route::post('/onflaude-recovery', function (\Illuminate\Http\Request $request) {
 Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('category');
 Route::get('/tag/{slug}', [FrontendController::class, 'tag'])->name('tag');
 
+Route::get('/media-thumb/{path}', [\App\Http\Controllers\MediaController::class, 'serveThumb'])
+    ->where('path', '.*')
+    ->name('media.thumb');
+
 Route::get('/media/{path}', [\App\Http\Controllers\MediaController::class, 'serve'])
     ->where('path', '.*')
     ->name('media.serve');

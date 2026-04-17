@@ -205,7 +205,7 @@
                         {{ $selectedId === $file->id ? 'of-ml-item--selected' : 'border-transparent' }}">
                     <div class="aspect-square flex items-center justify-center bg-gray-50 overflow-hidden">
                         @if($file->isImage())
-                            <img src="{{ $file->url }}" alt="{{ $file->alt_text }}"
+                            <img src="{{ $file->thumb_url }}" alt="{{ $file->alt_text }}"
                                 class="w-full h-full object-cover" loading="lazy" />
                         @else
                             <span class="text-3xl">{{ match($file->type) {

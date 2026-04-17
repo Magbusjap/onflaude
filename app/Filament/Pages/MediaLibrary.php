@@ -340,6 +340,17 @@ class MediaLibrary extends Page implements HasForms
                             ->save(Storage::disk('media')->path($newPath));
                     }
 
+                    // Генерация thumbnail
+                    $thumbDir = Storage::disk('media')->path('thumbs/' . dirname($newPath));
+                    if (!is_dir($thumbDir)) {
+                        mkdir($thumbDir, 0755, true);
+                    }
+                    $thumbFullPath = Storage::disk('media')->path('thumbs/' . $newPath);
+                    $manager->decodePath(Storage::disk('media')->path($newPath))
+                        ->scaleDown(400, 400)
+                        ->encodeUsingMediaType($realMime, quality: 75)
+                        ->save($thumbFullPath);
+
                     clearstatcache(true, Storage::disk('media')->path($newPath));
                     $size   = filesize(Storage::disk('media')->path($newPath));
                     $width  = $img->width();

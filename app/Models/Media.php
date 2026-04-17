@@ -170,4 +170,12 @@ class Media extends Model
         Notification::make()->title('File replaced')->success()->send();
     }
 
+    public function getThumbUrlAttribute(): string
+    {
+        if (!$this->isImage()) {
+            return $this->url;
+        }
+        return route('media.thumb', ['path' => $this->path]) . '?v=' . $this->updated_at->timestamp;
+    }
+
 }
