@@ -26,6 +26,7 @@ class Media extends Model
         'width',
         'height',
         'alt_text',
+        'folder_id',
     ];
 
     public function isImage(): bool
@@ -41,6 +42,11 @@ class Media extends Model
     public function uploader()
     {
         return $this->belongsTo(\App\Models\User::class, 'uploaded_by');
+    }
+
+    public function folder(): BelongsTo
+    {
+        return $this->belongsTo(MediaFolder::class, 'folder_id');
     }
 
     public function getHumanSizeAttribute(): string

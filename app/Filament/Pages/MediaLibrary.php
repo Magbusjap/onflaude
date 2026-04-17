@@ -16,6 +16,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use App\Services\MediaSettings;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Livewire\Attributes\Computed;
+use App\Models\MediaFolder;
 
 
 class MediaLibrary extends Page implements HasForms
@@ -43,6 +44,9 @@ class MediaLibrary extends Page implements HasForms
 
     public int $perPage = 25;
     public int $currentPage = 1;
+    public ?int $currentFolderId = null;
+    public string $newFolderName = '';
+    public bool $showFolderForm = false;
 
     public function updatedSelectedId(): void
     {
@@ -96,6 +100,12 @@ class MediaLibrary extends Page implements HasForms
                 ->orWhere('title', 'ilike', '%' . $this->search . '%')
                 ->orWhere('alt_text', 'ilike', '%' . $this->search . '%');
             }))
+            ->when($this->currentFolderId !== null, function($q) {
+                if ($this->currentFolderId === 0) {
+                    return $q->whereNull('folder_id');
+                }
+                return $q->where('folder_id', $this->currentFolderId);
+            })
             ->when($this->typeFilter !== 'all', function ($q) {
                 return match ($this->typeFilter) {
                     'images'    => $q->where('mime_type', 'like', 'image/%'),
@@ -148,6 +158,53 @@ class MediaLibrary extends Page implements HasForms
     {
         $this->currentPage = 1;
         unset($this->media);
+    }
+
+    public function getFoldersProperty()
+    {
+        return \App\Models\MediaFolder::orderBy('name')->get();
+    }
+
+    public function selectFolder(?int $id): void
+    {
+        $this->currentFolderId = $id;
+        $this->currentPage = 1;
+        $this->selectedId = null;
+        unset($this->media);
+    }
+
+    public function createFolder(): void
+    {
+        $name = trim($this->newFolderName);
+        if (!$name) return;
+
+        \App\Models\MediaFolder::create([
+            'name' => $name,
+            'slug' => \App\Models\MediaFolder::generateSlug($name),
+        ]);
+
+        $this->newFolderName = '';
+        $this->showFolderForm = false;
+    }
+
+    public function deleteFolder(int $id): void
+    {
+        abort_unless(auth()->user()?->role === 'administrator', 403);
+        $folder = \App\Models\MediaFolder::find($id);
+        if (!$folder) return;
+        // Файлы остаются, folder_id → null (nullOnDelete в FK)
+        $folder->delete();
+        if ($this->currentFolderId === $id) {
+            $this->currentFolderId = null;
+        }
+    }
+
+    public function moveToFolder(?int $folderId): void
+    {
+        if (!$this->selectedId) return;
+        Media::where('id', $this->selectedId)->update(['folder_id' => $folderId]);
+        unset($this->media);
+        Notification::make()->title('Moved')->success()->send();
     }
 
     public static function canAccess(): bool
