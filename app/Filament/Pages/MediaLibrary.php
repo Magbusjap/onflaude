@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use App\Services\MediaSettings;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Livewire\Attributes\Computed;
+
 
 class MediaLibrary extends Page implements HasForms
 {
@@ -36,6 +40,9 @@ class MediaLibrary extends Page implements HasForms
 
     public array $uploadData = ['files' => []];
     public bool $showUploader = false;
+
+    public int $perPage = 25;
+    public int $currentPage = 1;
 
     public function updatedSelectedId(): void
     {
@@ -70,27 +77,25 @@ class MediaLibrary extends Page implements HasForms
                 FileUpload::make('files')
                     ->label('')
                     ->multiple()
-                    ->maxSize(65536) // 64MB
-                    ->acceptedFileTypes([
-                        'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
-                        'application/pdf', 'application/msword',
-                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                        'video/mp4', 'video/webm', 'audio/mpeg', 'audio/wav',
-                    ])
+                    ->maxSize(MediaSettings::maxBytes() / 1024)
+                    ->acceptedFileTypes(MediaSettings::allowedMimes())
                     ->disk('public')
                     ->directory('media')
                     ->storeFileNamesIn('original_names')
-                    ->image()
-                    ->imageResizeMode('contain')
                     ->columnSpanFull(),
             ])
             ->statePath('uploadData');
     }
 
+    #[Computed(persist: false, cache: true)]
     public function getMediaProperty()
     {
         $query = Media::query()
-            ->when($this->search, fn($q) => $q->where('original_name', 'ilike', '%' . $this->search . '%'))
+            ->when($this->search, fn($q) => $q->where(function($q) {
+                $q->where('original_name', 'ilike', '%' . $this->search . '%')
+                ->orWhere('title', 'ilike', '%' . $this->search . '%')
+                ->orWhere('alt_text', 'ilike', '%' . $this->search . '%');
+            }))
             ->when($this->typeFilter !== 'all', function ($q) {
                 return match ($this->typeFilter) {
                     'images'    => $q->where('mime_type', 'like', 'image/%'),
@@ -101,11 +106,48 @@ class MediaLibrary extends Page implements HasForms
                 };
             });
 
-        return match ($this->sortBy) {
-            'oldest'   => $query->orderBy('created_at')->get(),
-            'name_asc' => $query->orderBy('original_name')->get(),
-            default    => $query->orderByDesc('created_at')->get(), 
+        $query = match ($this->sortBy) {
+            'oldest'   => $query->orderBy('created_at'),
+            'name_asc' => $query->orderBy('original_name'),
+            default    => $query->orderByDesc('created_at'),
         };
+
+        return $query->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+    }
+
+    public function getTotalPagesProperty(): int
+    {
+        return (int) ceil($this->media->total() / $this->perPage);
+    }
+
+    public function goToPage(int $page): void
+    {
+        $this->currentPage = max(1, min($page, $this->totalPages));
+        unset($this->media);
+    }
+
+    public function updatedPerPage(): void
+    {
+        $this->currentPage = 1;
+        unset($this->media);
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->currentPage = 1;
+        unset($this->media);
+    }
+
+    public function updatedTypeFilter(): void
+    {
+        $this->currentPage = 1;
+        unset($this->media);
+    }
+
+    public function updatedSortBy(): void
+    {
+        $this->currentPage = 1;
+        unset($this->media);
     }
 
     public static function canAccess(): bool
@@ -115,7 +157,8 @@ class MediaLibrary extends Page implements HasForms
 
     public function getSelectedMedia(): ?Media
     {
-        return $this->selectedId ? Media::find($this->selectedId) : null;
+        if (!$this->selectedId) return null;
+        return Media::find($this->selectedId);
     }
 
     public function selectFile(int $id): void
@@ -181,22 +224,16 @@ class MediaLibrary extends Page implements HasForms
 
     public function saveFiles(): void
     {
-        $this->validate();
-
         $files = $this->uploadData['files'] ?? [];
-        $manager = new ImageManager(new Driver());
+
+        if (empty($files)) {
+            Notification::make()->title('Please wait for files to finish uploading')->warning()->send();
+            return;
+        }
+
+        $this->validate();
+        $manager = new ImageManager(new ImagickDriver());
         $uploaded = 0;
-
-        if (!$this->selectedId) return;
-
-        Media::where('id', $this->selectedId)->update([
-            'alt_text'    => $this->altText,
-            'title'       => $this->mediaTitle,
-            'caption'     => $this->mediaCaption,
-            'description' => $this->mediaDescription,
-        ]);
-
-        Notification::make()->title('Saved')->success()->send();
 
         foreach ($files as $file) {
             $tmpPath = $file->getRealPath();
@@ -205,42 +242,61 @@ class MediaLibrary extends Page implements HasForms
                 continue;
             }
 
-            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $finfo    = new \finfo(FILEINFO_MIME_TYPE);
             $realMime = $finfo->file($tmpPath);
 
-            $allowedMimes = [
-                'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-                'application/pdf', 'video/mp4', 'video/webm',
-                'audio/mpeg', 'audio/wav',
-                'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            ];
-
-            if (!in_array($realMime, $allowedMimes)) {
+            if (!in_array($realMime, MediaSettings::allowedMimes())) {
                 Notification::make()->title("Rejected: {$realMime}")->danger()->send();
                 continue;
             }
 
             $originalName = $file->getClientOriginalName();
-            $ext = strtolower($file->getClientOriginalExtension());
-            $size = $file->getSize();
+            $ext          = strtolower($file->getClientOriginalExtension());
+            $cleanName    = MediaSettings::sanitizeFilename($originalName);
+            $folder       = MediaSettings::uploadFolder();
+            $newPath      = $folder . '/' . uniqid() . '_' . $cleanName;
 
-            $newPath = 'uploads/' . uniqid() . '_' . $originalName;
             Storage::disk('media')->put($newPath, file_get_contents($tmpPath));
+            $size = Storage::disk('media')->size($newPath);
 
-            $width = null;
-            $height = null;
+            $isImage = str_starts_with($realMime, 'image/') && $ext !== 'svg';
 
-            if (str_starts_with($realMime, 'image/') && $ext !== 'svg') {
+            if ($isImage) {
                 try {
                     $img = $manager->decodePath(Storage::disk('media')->path($newPath));
+
+                    if (MediaSettings::stripExif()) {
+                        $img->core()->native()->stripImage();
+                    }
+
+                    if (MediaSettings::convertToWebp()) {
+                        $webpPath = preg_replace('/\.[^.]+$/', '.webp', $newPath);
+                        $img->encodeUsingMediaType('image/webp', quality: MediaSettings::jpegQuality())
+                            ->save(Storage::disk('media')->path($webpPath));
+                        Storage::disk('media')->delete($newPath);
+                        $newPath      = $webpPath;
+                        $ext          = 'webp';
+                        $realMime     = 'image/webp';
+                        $originalName = preg_replace('/\.[^.]+$/', '.webp', $originalName);
+                    } else {
+                        $img->encodeUsingFileExtension($ext, MediaSettings::jpegQuality())
+                            ->save(Storage::disk('media')->path($newPath));
+                    }
+
+                    clearstatcache(true, Storage::disk('media')->path($newPath));
+                    $size   = filesize(Storage::disk('media')->path($newPath));
                     $width  = $img->width();
                     $height = $img->height();
-                } catch (\Throwable) {}
-            }
 
-            $newPath = 'uploads/' . uniqid() . '_' . $originalName;
-            Storage::disk('media')->put($newPath, file_get_contents($tmpPath));
+                } catch (\Throwable $e) {
+                    \Log::error('Media processing failed: ' . $e->getMessage());
+                    $width  = null;
+                    $height = null;
+                }
+            } else {
+                $width  = null;
+                $height = null;
+            }
 
             Media::create([
                 'filename'      => basename($newPath),
@@ -257,11 +313,169 @@ class MediaLibrary extends Page implements HasForms
             $uploaded++;
         }
 
-        $this->uploadData = ['files' => []];
+        $this->uploadData  = ['files' => []];
         $this->showUploader = false;
 
         if ($uploaded > 0) {
             Notification::make()->title("{$uploaded} file(s) uploaded")->success()->send();
+        }
+    }
+
+    public function replaceForm(Form $form): Form
+    {
+        return $form
+            ->schema([
+                FileUpload::make('file')
+                    ->label('')
+                    ->maxSize(MediaSettings::maxBytes() / 1024)
+                    ->acceptedFileTypes(MediaSettings::allowedMimes())
+                    ->disk('public')
+                    ->directory('media')
+                    ->columnSpanFull(),
+            ])
+            ->statePath('replaceData');
+    }    
+
+    protected function getForms(): array
+    {
+        return ['form', 'replaceForm'];
+    }
+
+    public bool $showReplacer = false;
+    public array $replaceData = ['file' => null];
+
+    public function openReplacer(): void
+    {
+        $this->replaceData = ['file' => null];
+        $this->showReplacer = true;
+    }
+
+    public function closeReplacer(): void
+    {
+        $this->replaceData = ['file' => null];
+        $this->showReplacer = false;
+    }
+
+    public function replaceFile(): void
+    {
+        $media = Media::find($this->selectedId);
+        if (!$media) return;
+
+        $fileValue = $this->replaceData['file'] ?? null;
+
+        \Log::info('replaceFile start', [
+            'replaceData' => $this->replaceData,
+            'fileValue'   => $fileValue,
+        ]);
+
+        if (empty($fileValue) || !is_array($fileValue)) {
+            Notification::make()->title('Please wait for file to finish uploading')->warning()->send();
+            return;
+        }
+
+        $uuid     = array_key_first($fileValue);
+        $tmpData  = $fileValue[$uuid];
+
+        $livewireTmpDir = storage_path('app/private/livewire-tmp/');
+        $files = glob($livewireTmpDir . '*');
+
+        if (empty($files)) {
+            Notification::make()->title('File not found, please try again')->danger()->send();
+            return;
+        }
+
+        usort($files, fn($a, $b) => filemtime($b) - filemtime($a));
+        $tmpPath = $files[0];
+
+        \Log::info('tmpPath found', [
+            'tmpPath'  => $tmpPath,
+            'exists'   => file_exists($tmpPath),
+        ]);
+
+        if (!$tmpPath || !file_exists($tmpPath)) {
+            Notification::make()->title('File not found')->danger()->send();
+            return;
+        }
+
+        
+        try {
+            $originalName = basename($tmpPath);
+            $ext          = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+
+            $finfo    = new \finfo(FILEINFO_MIME_TYPE);
+            $realMime = $finfo->file($tmpPath);
+
+            if (str_contains($ext, '-')) {
+                $ext = substr($ext, strrpos($ext, '-') + 1);
+                $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            }
+
+            $manager = new ImageManager(new ImagickDriver());
+            $isImage = str_starts_with($realMime, 'image/') && $ext !== 'svg';
+            $oldPath = $media->path;
+
+            if ($isImage && MediaSettings::convertToWebp()) {
+                $newPath  = preg_replace('/\.[^.]+$/', '.webp', $oldPath);
+                $ext      = 'webp';
+                $realMime = 'image/webp';
+            } else {
+                $newPath = $oldPath;
+            }
+
+            $tmpStoragePath = $newPath . '.tmp';
+            Storage::disk('media')->put($tmpStoragePath, file_get_contents($tmpPath));
+
+            $size   = Storage::disk('media')->size($tmpStoragePath);
+            $width  = null;
+            $height = null;
+
+            if ($isImage) {
+                try {
+                    $img = $manager->decodePath(Storage::disk('media')->path($tmpStoragePath));
+
+                    if (MediaSettings::stripExif()) {
+                        $img->core()->native()->stripImage();
+                    }
+
+                    if (MediaSettings::convertToWebp()) {
+                        $img->encodeUsingMediaType('image/webp', quality: MediaSettings::jpegQuality())
+                            ->save(Storage::disk('media')->path($tmpStoragePath));
+                    } else {
+                        $img->encodeUsingFileExtension($ext, MediaSettings::jpegQuality())
+                            ->save(Storage::disk('media')->path($tmpStoragePath));
+                    }
+
+                    clearstatcache(true, Storage::disk('media')->path($tmpStoragePath));
+                    $size   = filesize(Storage::disk('media')->path($tmpStoragePath));
+                    $width  = $img->width();
+                    $height = $img->height();
+
+                } catch (\Throwable $e) {
+                    \Log::error('Replace processing failed: ' . $e->getMessage());
+                }
+            }
+
+            Storage::disk('media')->delete($oldPath);
+            Storage::disk('media')->move($tmpStoragePath, $newPath);
+
+            $media->update([
+                'path'      => $newPath,
+                'filename'  => basename($newPath),
+                'mime_type' => $realMime,
+                'ext'       => $ext,
+                'size'      => $size,
+                'width'     => $width,
+                'height'    => $height,
+            ]);
+
+            $this->replaceData  = ['file' => null];
+            $this->showReplacer = false;
+            unset($this->media);
+
+            Notification::make()->title('File replaced')->success()->send();
+        } catch (\Throwable $e) {
+            \Log::error('replaceFile exception: ' . $e->getMessage() . ' on line ' . $e->getLine());
+            Notification::make()->title('Error: ' . $e->getMessage())->danger()->send();
         }
     }
 }

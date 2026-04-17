@@ -90,6 +90,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 \App\Filament\Pages\MediaLibrary::class,
             ])
+
             ->authMiddleware([
                 Authenticate::class,
             ]);

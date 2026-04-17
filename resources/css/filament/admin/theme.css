@@ -163,3 +163,52 @@
 .of-ml-btn-danger { color: #A32D2D; border-color: #F7C1C1; }
 .of-ml-btn-danger:hover { background: #FCEBEB; }
 .of-ml-btn-full { width: 100%; }
+
+
+
+
+
+/* ===== Media Library: Resize Handle ===== */
+.of-ml-resize-handle {
+    width: 12px;
+    background: var(--gray-200, #e5e7eb);
+    cursor: col-resize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+
+.of-ml-resize-handle:hover,
+.of-ml-resize-handle--active {
+    background: #0097D7;
+}
+
+.of-ml-resize-handle__icon {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-400, #9ca3af);
+    letter-spacing: -3px;
+    line-height: 1;
+    pointer-events: none;
+    transition: color 0.15s;
+}
+
+.of-ml-resize-handle:hover .of-ml-resize-handle__icon,
+.of-ml-resize-handle--active .of-ml-resize-handle__icon {
+    color: #fff;
+}
+
+/* ===== Media Library: Sidebar responsive layout ===== */
+.of-ml-sidebar-meta--wide {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 16px;
+}
+
+.of-ml-sidebar-fields--wide {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
