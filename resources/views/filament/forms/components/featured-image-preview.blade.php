@@ -2,15 +2,19 @@
     x-data="{
         previewUrl: '',
         mediaModalOpen: false,
+        instanceId: 'featured-image',
         modalKey: 1,
         uploading: false,
         openModal() {
             this.mediaModalOpen = true;
             document.body.style.overflow = 'hidden';
+            window.__activeMediaPickerInstance = 'featured-image';
             this.$nextTick(() => {
                 const all = Livewire.all();
                 const picker = all.find(c => c.name === 'media-picker');
-                if (picker) picker.call('resetState');
+                if (picker) {
+                    picker.$wire.resetState();
+                }
             });
         },
         closeModal() {
@@ -45,13 +49,34 @@
                 .finally(() => { this.uploading = false; });
         }
     }"
-    x-on:media-picked.window="previewUrl = $event.detail.url; closeModal();"
     x-on:media-quick-uploaded.window="
         $wire.$parent.set('data.featured_image_id', $event.detail.id);
     "
     x-on:featured-image-removed.window="previewUrl = ''"
     x-on:keydown.escape.window="closeModal()"
     x-init="
+        window.addEventListener('media-picked.featured-image', (e) => {
+            previewUrl = e.detail.url;
+            closeModal();
+            const editPost = Livewire.all().find(c => c.name === 'app.filament.resources.post-resource.pages.edit-post');
+            if (editPost) editPost.$wire.setFeaturedImage(e.detail.id);
+        });
+        $watch('mediaModalOpen', value => {
+            if (value) {
+                setTimeout(() => {
+                    const modal = document.querySelector('.of-featured-picker-modal');
+                    if (!modal) return;
+                    const wireEl = modal.querySelector('[wire\\:id]');
+                    if (!wireEl) return;
+                    const wireId = wireEl.getAttribute('wire:id');
+                    const picker = Livewire.find(wireId);
+                    if (picker) {
+                        picker.resetState();
+                        picker.setInstanceId('featured-image');
+                    }
+                }, 100);
+            }
+        });
         @if($getRecord()?->featured_image_id)
             previewUrl = {{ json_encode(\App\Models\Media::find($getRecord()->featured_image_id)?->url ?? '') }}
         @endif
@@ -141,7 +166,7 @@
 
             <div class="absolute inset-0 bg-black/50" x-on:click="closeModal()"></div>
 
-            <div class="relative bg-white rounded-xl shadow-2xl w-full flex flex-col"
+            <div class="of-featured-picker-modal relative bg-white rounded-xl shadow-2xl w-full flex flex-col"
                 style="max-width: 72rem; height: 80vh; max-height: 800px; margin-left: 280px;"
                 x-on:click.stop>
 
@@ -157,7 +182,7 @@
 
                 <div class="flex-1 min-h-0 overflow-hidden p-4">
                     <div x-key="modalKey">
-                        @livewire('media-picker', [], key('featured-image-picker'))
+                        @livewire('media-picker', ['instanceId' => 'default'], key('featured-image-picker-' . uniqid()))
                     </div>
                 </div>
             </div>

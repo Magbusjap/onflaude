@@ -74,8 +74,11 @@ class MediaPicker extends Component
         if (!$this->selectedId) return;
         $media = Media::find($this->selectedId);
         if (!$media) return;
-        $this->dispatch('media-picked', id: $this->selectedId, url: $media->url);
+        $url = addslashes($media->url);
+        $this->js("window.dispatchEvent(new CustomEvent('media-picked.{$this->instanceId}', { detail: { id: {$this->selectedId}, url: '{$url}' } }))");
     }
+
+    public string $instanceId = 'default';
 
     public function selectFolder(?int $id): void
     {
@@ -186,6 +189,16 @@ class MediaPicker extends Component
         $this->activeTab     = 1;
         $this->uploadFiles   = [];
         unset($this->media);
+    }
+
+    public function mount(string $instanceId = 'default'): void
+    {
+        $this->instanceId = $instanceId;
+    }
+
+    public function setInstanceId(string $id): void
+    {
+        $this->instanceId = $id;
     }
 
     public function render()

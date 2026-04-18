@@ -41,6 +41,11 @@ Route::post('/media/upload-quick', [App\Http\Controllers\MediaController::class,
 Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('category');
 Route::get('/tag/{slug}', [FrontendController::class, 'tag'])->name('tag');
 
+Route::get('/media/url/{id}', function ($id) {
+    $media = \App\Models\Media::find($id);
+    return response()->json(['url' => $media?->url]);
+})->middleware(['web', 'auth']);
+
 Route::get('/media-thumb/{path}', [\App\Http\Controllers\MediaController::class, 'serveThumb'])
     ->where('path', '.*')
     ->name('media.thumb');

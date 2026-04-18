@@ -21,4 +21,21 @@ class EditPost extends EditRecord
     {
         $this->data['featured_image_id'] = $id;
     }
+
+    public function setBuilderImageId(string $statePath, int $mediaId): void
+    {
+        $keys = explode('.', $statePath);
+        $data = &$this->data;
+        foreach ($keys as $i => $key) {
+            if ($i === count($keys) - 1) {
+                $data[$key] = $mediaId;
+            } else {
+                if (!isset($data[$key]) || !is_array($data[$key])) {
+                    $data[$key] = [];
+                }
+                $data = &$data[$key];
+            }
+        }
+    }
 }
+

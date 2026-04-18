@@ -1,6 +1,5 @@
 import './bootstrap';
-import './frontend/admin-bar.js';
-
+import { init as initAdminBar } from './frontend/admin-bar.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initAdminBar();

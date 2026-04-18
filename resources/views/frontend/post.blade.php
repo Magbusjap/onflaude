@@ -27,7 +27,49 @@
         </header>
 
         <div class="prose prose-lg max-w-none">
-            {!! $post->content !!}
+            @foreach($post->content ?? [] as $block)
+                @switch($block['type'])
+                    @case('heading')
+                        <{{ $block['data']['level'] }}>{{ $block['data']['text'] }}</{{ $block['data']['level'] }}>
+                        @break
+                    @case('text')
+                        <div>{!! $block['data']['content'] !!}</div>
+                        @break
+                    @case('markdown')
+                        <div>{!! \Illuminate\Support\Str::markdown($block['data']['content']) !!}</div>
+                        @break
+                    @case('quote')
+                        <blockquote>
+                            <p>{{ $block['data']['text'] }}</p>
+                            @if($block['data']['author'] ?? null)
+                                <cite>— {{ $block['data']['author'] }}</cite>
+                            @endif
+                        </blockquote>
+                        @break
+                    @case('image')
+                        @php $media = \App\Models\Media::find($block['data']['media_id']) @endphp
+                        @if($media)
+                            <figure>
+                                <img src="{{ $media->url }}" alt="{{ $block['data']['caption'] ?? '' }}" />
+                                @if($block['data']['caption'] ?? null)
+                                    <figcaption>{{ $block['data']['caption'] }}</figcaption>
+                                @endif
+                            </figure>
+                        @endif
+                        @break
+                    @case('image_text')
+                        @php $media = \App\Models\Media::find($block['data']['media_id']) @endphp
+                        @if($media)
+                            <div class="flex gap-6 {{ $block['data']['position'] === 'right' ? 'flex-row-reverse' : 'flex-row' }}">
+                                <img src="{{ $media->url }}"
+                                    style="width: {{ $block['data']['width'] ?? 300 }}px; object-fit: cover;"
+                                    alt="" />
+                                <div>{!! $block['data']['text'] !!}</div>
+                            </div>
+                        @endif
+                        @break
+                @endswitch
+            @endforeach
         </div>
 
         @if($post->tags->count())

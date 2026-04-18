@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Filament\Traits\HasGlobalSearch;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Actions;
+use FilamentTiptapEditor\TiptapEditor;
 
 class PostResource extends Resource
 {
@@ -49,18 +50,84 @@ class PostResource extends Resource
                                     ->label('URL')
                                     ->prefix('/')
                                     ->unique(ignoreRecord: true),
-                                Forms\Components\RichEditor::make('content')
-                                    ->columnSpanFull()
-                                    ->toolbarButtons([
-                                        'bold', 'italic', 'underline',
-                                        'bulletList', 'orderedList',
-                                        'blockquote', 'codeBlock',
-                                        'h2', 'h3',
-                                        'link', 'undo', 'redo',
-                                    ]),
+
+
                                 Forms\Components\Textarea::make('excerpt')
                                     ->rows(3)
                                     ->maxLength(500),
+                                
+                                Forms\Components\Builder::make('content')
+                                    ->label('Content')
+                                    ->columnSpanFull()
+                                    ->blocks([
+                                        Forms\Components\Builder\Block::make('heading')
+                                            ->label('Heading')
+                                            ->schema([
+                                                Forms\Components\Select::make('level')
+                                                    ->options(['h2' => 'H2', 'h3' => 'H3'])
+                                                    ->default('h2')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('text')
+                                                    ->label('Text')
+                                                    ->required(),
+                                            ]),
+                                        Forms\Components\Builder\Block::make('text')
+                                            ->label('Text')
+                                            ->schema([
+                                                \FilamentTiptapEditor\TiptapEditor::make('content')
+                                                    ->label('Content')
+                                                    ->required(),
+                                            ]),
+                                        Forms\Components\Builder\Block::make('image')
+                                            ->label('Image')
+                                            ->schema([
+                                                Forms\Components\Hidden::make('media_id'),
+                                                Forms\Components\ViewField::make('media_preview')
+                                                    ->view('filament.forms.components.builder-image-picker')
+                                                    ->dehydrated(false)
+                                                    ->live(),
+                                                Forms\Components\TextInput::make('caption')
+                                                    ->label('Caption'),
+                                            ]),
+                                        Forms\Components\Builder\Block::make('image_text')
+                                            ->label('Image + Text')
+                                            ->schema([
+                                                Forms\Components\Hidden::make('media_id'),
+                                                Forms\Components\ViewField::make('media_preview')
+                                                    ->view('filament.forms.components.builder-image-picker')
+                                                    ->dehydrated(false)
+                                                    ->live(),
+                                                Forms\Components\Select::make('position')
+                                                    ->options(['left' => 'Left', 'right' => 'Right'])
+                                                    ->default('left')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('width')
+                                                    ->label('Image width (px)')
+                                                    ->numeric()
+                                                    ->default(300),
+                                                \FilamentTiptapEditor\TiptapEditor::make('text')
+                                                    ->label('Text')
+                                                    ->required(),
+                                            ]),
+                                        Forms\Components\Builder\Block::make('quote')
+                                            ->label('Quote')
+                                            ->schema([
+                                                Forms\Components\Textarea::make('text')
+                                                    ->label('Quote text')
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('author')
+                                                    ->label('Author'),
+                                            ]),
+                                        Forms\Components\Builder\Block::make('markdown')
+                                            ->label('Markdown')
+                                            ->schema([
+                                                Forms\Components\Textarea::make('content')
+                                                    ->label('Markdown text')
+                                                    ->required()
+                                                    ->rows(10),
+                                            ]),
+                                    ]),
+
                             ]),
 
                         Forms\Components\Group::make()
@@ -85,23 +152,10 @@ class PostResource extends Resource
                                 Forms\Components\Section::make('Featured Image')
                                     ->schema([
                                         Forms\Components\Hidden::make('featured_image_id'),
-
                                         Forms\Components\ViewField::make('featured_image_preview')
                                             ->view('filament.forms.components.featured-image-preview')
                                             ->dehydrated(false)
                                             ->live(),
-
-                                        Forms\Components\Actions::make([
-                                            Forms\Components\Actions\Action::make('remove_image')
-                                                ->label('Remove')
-                                                ->color('danger')
-                                                ->icon('heroicon-o-x-mark')
-                                                ->visible(fn (Forms\Get $get) => (bool) $get('featured_image_id'))
-                                                ->action(function (Forms\Set $set, $livewire) {
-                                                    $set('featured_image_id', null);
-                                                    $livewire->dispatch('featured-image-removed');
-                                                }),
-                                        ]),
                                     ]),
 
                                 Forms\Components\Section::make('Taxonomy')
