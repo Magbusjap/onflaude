@@ -85,7 +85,8 @@ class PostResource extends Resource
                                                 Forms\Components\ViewField::make('media_preview')
                                                     ->view('filament.forms.components.builder-image-picker')
                                                     ->dehydrated(false)
-                                                    ->live(),
+                                                    ->live()
+                                                    ->viewData(fn (Forms\Get $get) => ['mediaUrl' => \App\Models\Media::find($get('media_id'))?->url ?? '']),
                                                 Forms\Components\TextInput::make('caption')
                                                     ->label('Caption'),
                                             ]),
@@ -96,7 +97,8 @@ class PostResource extends Resource
                                                 Forms\Components\ViewField::make('media_preview')
                                                     ->view('filament.forms.components.builder-image-picker')
                                                     ->dehydrated(false)
-                                                    ->live(),
+                                                    ->live()
+                                                    ->viewData(fn (Forms\Get $get) => ['mediaUrl' => \App\Models\Media::find($get('media_id'))?->url ?? '']),
                                                 Forms\Components\Select::make('position')
                                                     ->options(['left' => 'Left', 'right' => 'Right'])
                                                     ->default('left')

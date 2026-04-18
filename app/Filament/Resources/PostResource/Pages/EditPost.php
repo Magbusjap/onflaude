@@ -22,7 +22,7 @@ class EditPost extends EditRecord
         $this->data['featured_image_id'] = $id;
     }
 
-    public function setBuilderImageId(string $statePath, int $mediaId): void
+    public function setBuilderImageId(string $statePath, ?int $mediaId): void
     {
         $keys = explode('.', $statePath);
         $data = &$this->data;

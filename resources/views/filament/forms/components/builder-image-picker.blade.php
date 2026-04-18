@@ -10,23 +10,45 @@
         closeModal() {
             this.mediaModalOpen = false;
             document.body.style.overflow = '';
-        }
+        },
+        uploading: false,
+        uploadBuilderImage(file) {
+            if (!file) return;
+            this.uploading = true;
+            const fd = new FormData();
+            fd.append('file', file);
+            fd.append('_token', document.querySelector('meta[name=csrf-token]').content);
+            fetch('/media/upload-quick', { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.id && data.url) {
+                        this.previewUrl = data.url;
+                        const editPost = Livewire.all().find(c => c.name === 'app.filament.resources.post-resource.pages.edit-post');
+                        if (!editPost) return;
+                        let blockKey = null;
+                        let el = $el;
+                        while (el) {
+                            const key = el.getAttribute && el.getAttribute('wire:key');
+                            if (key && key.includes('.item')) { blockKey = key; break; }
+                            el = el.parentElement;
+                        }
+                        if (!blockKey) return;
+                        const parts = blockKey.split('.');
+                        const uuidIndex = parts.findIndex(p => p.match(/^[0-9a-f-]{36}$/));
+                        if (uuidIndex === -1) return;
+                        const uuid = parts[uuidIndex];
+                        editPost.$wire.setBuilderImageId('content.' + uuid + '.data.media_id', data.id);
+                    }
+                })
+                .finally(() => { this.uploading = false; });
+        },
     }"
     x-on:keydown.escape.window="closeModal()"
     x-init="
         instanceId = 'block-' + Math.random().toString(36).substr(2, 9);
-        $nextTick(() => {
-            const block = $el.closest('[wire\\:key*=\'.item\']');
-            if (block) {
-                const hidden = block.querySelector('input[type=hidden][name*=media_id], input[type=hidden][wire\\:model*=media_id]');
-                if (hidden && hidden.value) {
-                    fetch('/media/url/' + hidden.value)
-                        .then(r => r.json())
-                        .then(data => { if (data.url) previewUrl = data.url; })
-                        .catch(() => {});
-                }
-            }
-        });
+        @if(!empty($mediaUrl))
+            previewUrl = {{ json_encode($mediaUrl) }};
+        @endif
         window.addEventListener('media-picked.' + instanceId, (e) => {
             previewUrl = e.detail.url;
             closeModal();
@@ -62,6 +84,9 @@
         });
     ">
 
+    <input type="file" x-ref="builderFileInput" class="hidden" accept="image/*"
+        x-on:change="uploadBuilderImage($event.target.files[0])" />
+
     {{-- Preview --}}
     <template x-if="previewUrl">
         <div class="rounded-md overflow-hidden border border-gray-200 mb-2 relative">
@@ -69,10 +94,37 @@
         </div>
     </template>
     <template x-if="!previewUrl">
-        <div class="mb-2 rounded-md border-2 border-dashed border-gray-200 bg-gray-50
-            flex items-center justify-center text-gray-400 text-sm"
-            style="height: 100px;">
-            No image selected
+        <div
+            class="mb-2 rounded-md border-2 border-dashed border-gray-200 bg-gray-50
+                flex flex-col items-center justify-center text-gray-400 text-sm cursor-pointer
+                hover:border-primary-300 hover:bg-primary-50 transition-colors"
+            style="height: 100px;"
+            x-on:click="$refs.builderFileInput.click()"
+            x-on:dragover.prevent="$el.classList.add('border-primary-400', 'bg-primary-50')"
+            x-on:dragleave.prevent="$el.classList.remove('border-primary-400', 'bg-primary-50')"
+            x-on:drop.prevent="
+                $el.classList.remove('border-primary-400', 'bg-primary-50');
+                const file = $event.dataTransfer.files[0];
+                if (file) uploadBuilderImage(file);
+            ">
+            <template x-if="uploading">
+                <div class="flex flex-col items-center gap-1 pointer-events-none">
+                    <svg class="w-5 h-5 animate-spin text-primary-400" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                    </svg>
+                    <span>Uploading...</span>
+                </div>
+            </template>
+            <template x-if="!uploading">
+                <div class="flex flex-col items-center gap-1 pointer-events-none">
+                    <svg class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                    <span>Drop image or click to upload</span>
+                </div>
+            </template>
         </div>
     </template>
 
@@ -86,6 +138,36 @@
         </svg>
         Choose from Media Library
     </button>
+
+    <template x-if="previewUrl">
+        <button type="button"
+            x-on:click="
+                previewUrl = '';
+                const editPost = Livewire.all().find(c => c.name === 'app.filament.resources.post-resource.pages.edit-post');
+                if (!editPost) return;
+                let blockKey = null;
+                let el = $el;
+                while (el) {
+                    const key = el.getAttribute && el.getAttribute('wire:key');
+                    if (key && key.includes('.item')) { blockKey = key; break; }
+                    el = el.parentElement;
+                }
+                if (!blockKey) return;
+                const parts = blockKey.split('.');
+                const uuidIndex = parts.findIndex(p => p.match(/^[0-9a-f-]{36}$/));
+                if (uuidIndex === -1) return;
+                const uuid = parts[uuidIndex];
+                editPost.$wire.setBuilderImageId('content.' + uuid + '.data.media_id', 0);
+            "
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg
+                border border-red-200 bg-white text-red-600 shadow-sm
+                hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            Remove
+        </button>
+    </template>
 
     {{-- Alpine Modal --}}
     <template x-teleport="body">
