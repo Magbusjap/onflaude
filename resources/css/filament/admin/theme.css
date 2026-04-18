@@ -230,3 +230,34 @@
 .fi-modal {
     z-index: 9999 !important;
 }
+
+
+
+
+/* === Sticky sidebar in post edit === */
+@layer utilities {
+    .fi-fo-component-ctn > [style*="--col-span-default: span 1 / span 1"]:last-child {
+        position: sticky;
+        top: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        align-self: start;
+    }
+}
+
+
+
+/* ===  Alpine.js toggle  === */
+@layer utilities {
+    body[data-sidebar-hidden] .fi-fo-component-ctn > [style*="--col-span-default: span 1 / span 1"]:last-child {
+        display: none;
+    }
+
+    body[data-sidebar-hidden] .fi-fo-component-ctn > [style*="--col-span-default: span 2 / span 2"] {
+        grid-column: 1 / -1;
+    }
+}
+
+
+
+

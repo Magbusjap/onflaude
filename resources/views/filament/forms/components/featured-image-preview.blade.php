@@ -124,7 +124,7 @@
         </div>
     </template>
 
-    {{-- Кнопки --}}
+    {{-- Buttons --}}
     <div class="flex items-center gap-2 flex-wrap">
         <button type="button" x-on:click="openModal()"
             class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg
@@ -149,6 +149,14 @@
                 Remove
             </button>
         </template>
+    </div>
+
+    {{-- Move to Trash --}}
+    <div class="mt-3">
+        <button type="button" disabled
+            class="text-xs text-red-400 cursor-not-allowed opacity-60">
+            Move to Trash
+        </button>
     </div>
 
     {{-- Alpine Modal --}}

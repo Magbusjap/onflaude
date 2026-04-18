@@ -14,5 +14,6 @@ class CreatePost extends CreateRecord
     {
         $this->data['featured_image_id'] = $id;
     }
+
 }
 

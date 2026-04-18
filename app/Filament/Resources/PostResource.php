@@ -89,6 +89,17 @@ class PostResource extends Resource
                                                     ->viewData(fn (Forms\Get $get) => ['mediaUrl' => \App\Models\Media::find($get('media_id'))?->url ?? '']),
                                                 Forms\Components\TextInput::make('caption')
                                                     ->label('Caption'),
+                                                Forms\Components\Toggle::make('proportional')
+                                                    ->label('Proportional')
+                                                    ->default(true)
+                                                    ->live(),
+                                                Forms\Components\TextInput::make('width')
+                                                    ->label('Width (px)')
+                                                    ->numeric(),
+                                                Forms\Components\TextInput::make('height')
+                                                    ->label('Height (px)')
+                                                    ->numeric()
+                                                    ->hidden(fn (Forms\Get $get) => (bool) $get('proportional')),
                                             ]),
                                         Forms\Components\Builder\Block::make('image_text')
                                             ->label('Image + Text')
@@ -165,11 +176,49 @@ class PostResource extends Resource
                                         Forms\Components\Select::make('categories')
                                             ->relationship('categories', 'name')
                                             ->multiple()
-                                            ->preload(),
+                                            ->preload()
+                                            ->searchable()
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->required()
+                                                    ->maxLength(255)
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn (?string $state, Forms\Set $set) =>
+                                                        $set('slug', $state ? Str::slug($state) : '')
+                                                    ),
+                                                Forms\Components\TextInput::make('slug')
+                                                    ->required()
+                                                    ->maxLength(255)
+                                                    ->label('URL')
+                                                    ->unique(ignoreRecord: true),
+                                                Forms\Components\Select::make('parent_id')
+                                                    ->label('Parent Category')
+                                                    ->relationship('parent', 'name')
+                                                    ->placeholder('None'),
+                                            ])
+                                            ->rules(['max:1'])
+                                            ->validationMessages([
+                                                'max' => 'Only one category allowed.',
+                                            ]),
                                         Forms\Components\Select::make('tags')
                                             ->relationship('tags', 'name')
                                             ->multiple()
-                                            ->preload(),
+                                            ->preload()
+                                            ->searchable()
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->required()
+                                                    ->maxLength(255)
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn (?string $state, Forms\Set $set) =>
+                                                        $set('slug', $state ? Str::slug($state) : '')
+                                                    ),
+                                                Forms\Components\TextInput::make('slug')
+                                                    ->required()
+                                                    ->maxLength(255)
+                                                    ->label('URL')
+                                                    ->unique(ignoreRecord: true),
+                                            ]),
                                     ]),
 
                                 Forms\Components\Section::make('SEO')

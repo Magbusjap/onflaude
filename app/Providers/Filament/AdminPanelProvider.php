@@ -81,6 +81,7 @@ class AdminPanelProvider extends PanelProvider
                 '<script src="' . asset('js/filament/onflaude.js') . '?v=' . filemtime(public_path('js/filament/onflaude.js')) . '"></script>' .
                 '<script type="module" src="' . asset('js/filament/index.js') . '?v=' . filemtime(public_path('js/filament/index.js')) . '"></script>'
             )
+
             ->renderHook('panels::topbar.start', fn (): string => 
                 view('filament.topbar.left')->render()
             )

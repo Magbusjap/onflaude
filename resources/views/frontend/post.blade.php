@@ -49,24 +49,39 @@
                     @case('image')
                         @php $media = \App\Models\Media::find($block['data']['media_id']) @endphp
                         @if($media)
-                            <figure>
-                                <img src="{{ $media->url }}" alt="{{ $block['data']['caption'] ?? '' }}" />
+                            <figure class="text-center">
+                                <img src="{{ $media->url }}"
+                                    class="mx-auto block"
+                                    alt="{{ $block['data']['caption'] ?? '' }}"
+                                    @if($block['data']['proportional'] ?? true)
+                                        @if($block['data']['width'] ?? null)
+                                            style="width: {{ $block['data']['width'] }}px; height: auto;"
+                                        @endif
+                                    @else
+                                        style="
+                                            {{ isset($block['data']['width']) ? 'width: ' . $block['data']['width'] . 'px;' : '' }}
+                                            {{ isset($block['data']['height']) ? 'height: ' . $block['data']['height'] . 'px;' : '' }}
+                                            object-fit: cover;
+                                        "
+                                    @endif
+                                />
                                 @if($block['data']['caption'] ?? null)
-                                    <figcaption>{{ $block['data']['caption'] }}</figcaption>
+                                    <figcaption class="text-sm text-gray-500 mt-2">{{ $block['data']['caption'] }}</figcaption>
                                 @endif
                             </figure>
                         @endif
                         @break
                     @case('image_text')
                         @php $media = \App\Models\Media::find($block['data']['media_id']) @endphp
-                        @if($media)
-                            <div class="flex gap-6 {{ $block['data']['position'] === 'right' ? 'flex-row-reverse' : 'flex-row' }}">
+                        <div class="flex gap-6 items-start {{ ($block['data']['position'] ?? 'left') === 'right' ? 'flex-row-reverse' : '' }}">
+                            @if($media)
                                 <img src="{{ $media->url }}"
-                                    style="width: {{ $block['data']['width'] ?? 300 }}px; object-fit: cover;"
-                                    alt="" />
-                                <div>{!! $block['data']['text'] !!}</div>
-                            </div>
-                        @endif
+                                    alt=""
+                                    style="width: {{ $block['data']['width'] ?? 300 }}px; flex-shrink: 0;"
+                                />
+                            @endif
+                            <div>{!! $block['data']['text'] !!}</div>
+                        </div>
                         @break
                 @endswitch
             @endforeach

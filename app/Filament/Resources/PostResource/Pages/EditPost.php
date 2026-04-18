@@ -13,13 +13,52 @@ class EditPost extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\Action::make('view')
+                ->label('')
+                ->icon('heroicon-o-arrow-top-right-on-square')
+                ->tooltip('View post')
+                ->url(fn () => '/blog/' . $this->record->slug)
+                ->openUrlInNewTab()
+                ->color('gray'),
+
+            Actions\Action::make('save_draft')
+                ->label('Save Draft')
+                ->icon('heroicon-o-document')
+                ->color('gray')
+                ->action(function () {
+                    $this->data['status'] = 'draft';
+                    $this->save();
+                }),
+
+            Actions\Action::make('publish')
+                ->label(fn () => $this->record->status === 'published' ? 'Update' : 'Publish')
+                ->icon('heroicon-o-globe-alt')
+                ->color('primary')
+                ->action(function () {
+                    $this->data['status'] = 'published';
+                    $this->save();
+                }),
+
+            Actions\Action::make('toggle_sidebar')
+                ->label('')
+                ->icon('heroicon-o-squares-2x2')
+                ->tooltip('Toggle sidebar')
+                ->color('gray')
+                ->livewireClickHandlerEnabled(false)
+                ->extraAttributes([
+                    'x-on:click.stop.prevent' => 'ofToggleSidebar()',
+                ]),
         ];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [];
     }
     
     public function setFeaturedImage(int $id): void
     {
-        $this->data['featured_image_id'] = $id;
+        $this->data['setBuilderImageId'] = $id;
     }
 
     public function setBuilderImageId(string $statePath, ?int $mediaId): void
