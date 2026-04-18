@@ -16,4 +16,9 @@ class EditPost extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+    
+    public function setFeaturedImage(int $id): void
+    {
+        $this->data['featured_image_id'] = $id;
+    }
 }

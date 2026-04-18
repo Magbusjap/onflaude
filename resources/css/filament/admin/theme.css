@@ -212,3 +212,21 @@
     grid-template-columns: 1fr 1fr;
     gap: 8px;
 }
+
+
+
+
+
+
+
+
+/* === Modal positioning === */
+.fi-modal-window {
+    max-width: min(1300px, calc(100vw - 280px - 100px)) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.fi-modal {
+    z-index: 41 !important;
+}

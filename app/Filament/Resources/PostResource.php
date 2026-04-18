@@ -14,6 +14,8 @@ use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Filament\Traits\HasGlobalSearch;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Actions;
 
 class PostResource extends Resource
 {
@@ -78,6 +80,40 @@ class PostResource extends Resource
                                         Forms\Components\Select::make('author_id')
                                             ->relationship('author', 'name')
                                             ->label('Author'),
+                                    ]),
+
+                                Forms\Components\Section::make('Featured Image')
+                                    ->schema([
+                                        Forms\Components\Hidden::make('featured_image_id'),
+
+                                        Forms\Components\ViewField::make('featured_image_preview')
+                                            ->view('filament.forms.components.featured-image-preview')
+                                            ->dehydrated(false)
+                                            ->live(),
+
+                                        Forms\Components\Actions::make([
+                                            Forms\Components\Actions\Action::make('choose_image')
+                                                ->label('Choose from Media Library')
+                                                ->icon('heroicon-o-photo')
+                                                ->color('gray')
+                                                ->modalContent(fn () => view('filament.forms.components.media-picker-modal'))
+                                                ->modalWidth(\Filament\Support\Enums\MaxWidth::FiveExtraLarge)
+                                                ->modalHeading('Select Image')
+                                                ->modalFooterActions([])
+                                                ->modalSubmitAction(false)
+                                                ->modalCancelActionLabel('Close')
+                                                ->action(fn () => null),
+
+                                            Forms\Components\Actions\Action::make('remove_image')
+                                                ->label('Remove')
+                                                ->color('danger')
+                                                ->icon('heroicon-o-x-mark')
+                                                ->visible(fn (Forms\Get $get) => (bool) $get('featured_image_id'))
+                                                ->action(function (Forms\Set $set, $livewire) {
+                                                    $set('featured_image_id', null);
+                                                    $livewire->dispatch('featured-image-removed');
+                                                }),
+                                        ]),
                                     ]),
 
                                 Forms\Components\Section::make('Taxonomy')
