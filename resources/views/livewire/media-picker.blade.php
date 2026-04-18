@@ -135,20 +135,18 @@
 
     {{-- Tab: Upload --}}
     @if($activeTab === 2)
-    <div class="flex flex-col items-center justify-center flex-1 py-8">
-        <div class="w-full max-w-lg text-center">
+    <div class="flex flex-col items-center justify-center flex-1 py-4 overflow-y-auto">
+        <div class="w-full max-w-lg text-center" x-data="{ previews: [] }">
 
             <div
-                x-data="{ dragging: false }"
-                x-on:dragover.prevent="dragging = true"
-                x-on:dragleave.prevent="dragging = false"
+                x-on:dragover.prevent="$el.classList.add('border-primary-400', 'bg-primary-50')"
+                x-on:dragleave.prevent="$el.classList.remove('border-primary-400', 'bg-primary-50')"
                 x-on:drop.prevent="
-                    dragging = false;
+                    $el.classList.remove('border-primary-400', 'bg-primary-50');
                     $refs.fileInput.files = $event.dataTransfer.files;
                     $refs.fileInput.dispatchEvent(new Event('change'));
                 "
-                :class="dragging ? 'border-primary-400 bg-primary-50' : 'border-gray-300 bg-gray-50'"
-                class="border-2 border-dashed rounded-xl p-8 transition-colors cursor-pointer"
+                class="border-2 border-dashed border-gray-300 bg-gray-50 rounded-xl p-8 transition-colors cursor-pointer"
                 x-on:click="$refs.fileInput.click()">
 
                 <svg class="mx-auto mb-3 w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -162,14 +160,39 @@
                     wire:model="uploadFiles"
                     x-ref="fileInput"
                     multiple
-                    class="hidden" />
+                    class="hidden"
+                    x-on:change="
+                        previews = [];
+                        Array.from($event.target.files).forEach(f => {
+                            if (!f.type.startsWith('image/')) {
+                                previews.push({ name: f.name, url: null });
+                                return;
+                            }
+                            const reader = new FileReader();
+                            reader.onload = e => previews.push({ name: f.name, url: e.target.result });
+                            reader.readAsDataURL(f);
+                        });
+                    " />
             </div>
 
-            @if(!empty($uploadFiles))
-            <div class="mt-3 text-sm text-gray-600">
-                {{ count($uploadFiles) }} file(s) selected
-            </div>
-            @endif
+            {{-- Preview--}}
+            <template x-if="previews.length > 0">
+                <div class="mt-3 grid grid-cols-4 gap-2" style="max-height: 160px; overflow-y: auto;">
+                    <template x-for="(file, i) in previews" :key="i">
+                        <div class="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50 aspect-square flex items-center justify-center" style="max-height: 80px;">
+                            <template x-if="file.url">
+                                <img :src="file.url" class="w-full h-full object-cover" />
+                            </template>
+                            <template x-if="!file.url">
+                                <span class="text-2xl">📄</span>
+                            </template>
+                            <div class="absolute bottom-0 left-0 right-0 bg-black/40 px-1 py-0.5">
+                                <span class="text-white text-[9px] truncate block" x-text="file.name"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
 
             <div class="mt-4">
                 <x-filament::button

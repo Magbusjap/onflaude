@@ -176,6 +176,18 @@ class MediaPicker extends Component
         }
     }
 
+    public function resetState(): void
+    {
+        $this->selectedId    = null;
+        $this->search        = '';
+        $this->typeFilter    = 'all';
+        $this->currentFolderId = null;
+        $this->currentPage   = 1;
+        $this->activeTab     = 1;
+        $this->uploadFiles   = [];
+        unset($this->media);
+    }
+
     public function render()
     {
         return view('livewire.media-picker');

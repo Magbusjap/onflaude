@@ -228,5 +228,5 @@
 }
 
 .fi-modal {
-    z-index: 41 !important;
+    z-index: 9999 !important;
 }

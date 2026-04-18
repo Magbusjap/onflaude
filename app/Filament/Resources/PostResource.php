@@ -92,18 +92,6 @@ class PostResource extends Resource
                                             ->live(),
 
                                         Forms\Components\Actions::make([
-                                            Forms\Components\Actions\Action::make('choose_image')
-                                                ->label('Choose from Media Library')
-                                                ->icon('heroicon-o-photo')
-                                                ->color('gray')
-                                                ->modalContent(fn () => view('filament.forms.components.media-picker-modal'))
-                                                ->modalWidth(\Filament\Support\Enums\MaxWidth::FiveExtraLarge)
-                                                ->modalHeading('Select Image')
-                                                ->modalFooterActions([])
-                                                ->modalSubmitAction(false)
-                                                ->modalCancelActionLabel('Close')
-                                                ->action(fn () => null),
-
                                             Forms\Components\Actions\Action::make('remove_image')
                                                 ->label('Remove')
                                                 ->color('danger')

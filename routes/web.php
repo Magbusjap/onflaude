@@ -35,6 +35,9 @@ Route::post('/onflaude-recovery', function (\Illuminate\Http\Request $request) {
     );
 })->name('recovery.post');
 
+Route::post('/media/upload-quick', [App\Http\Controllers\MediaController::class, 'uploadQuick'])
+    ->middleware(['web', 'auth']);
+
 Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('category');
 Route::get('/tag/{slug}', [FrontendController::class, 'tag'])->name('tag');
 
