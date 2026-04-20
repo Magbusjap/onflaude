@@ -1,7 +1,19 @@
 {
-    "name": "Default Theme",
+    "name": "Default",
+    "slug": "default",
     "version": "1.0.0",
-    "author": "OnFlaude",
-    "description": "Clean default theme",
-    "screenshot": "screenshot.png"
+    "description": "Дефолтная тема OnFlaude CMS. Плоская структура (без resources/), ITCSS-архитектура CSS, Tailwind v3.",
+    "author": {
+        "name": "Mikhail Bozheslav",
+        "url": "https://bozheslav.ru"
+    },
+    "requires": {
+        "onflaude": "^0.1.0"
+    },
+    "supports": {
+        "blocks": true,
+        "menus": true,
+        "widgets": false
+    },
+    "screenshot": "assets/screenshot.png"
 }
