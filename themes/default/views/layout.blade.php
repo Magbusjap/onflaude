@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', option('site_name', 'OnFlaude'))</title>
     <meta name="description" content="@yield('description', '')">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['themes/default/css/app.css', 'themes/default/js/app.js'])
 </head>
 <body class="bg-white text-gray-900 min-h-screen flex flex-col @auth of-has-admin-bar @endauth">
 

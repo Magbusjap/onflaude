@@ -1,12 +1,15 @@
 /**
  * OnFlaude Default Theme — JavaScript Entry Point
  *
- * Main JS bundle for the default theme. Initializes all components
- * on DOMContentLoaded.
+ * Инициализация компонентов темы после DOMContentLoaded.
+ * Каждый компонент импортируется как именованный init-модуль.
  *
  * @module app
  */
 
 import './bootstrap';
+import { init as initAdminBar } from './components/admin-bar.js';
 
-
+document.addEventListener('DOMContentLoaded', () => {
+    initAdminBar();
+});

@@ -1,7 +1,9 @@
 /*
  * OnFlaude Default Theme — Main Stylesheet
  *
- * Entry point for the default theme. Imports Tailwind v3 and ITCSS layers.
+ * Точка входа темы. Tailwind v3 + flat-структура CSS-модулей.
+ * ITCSS-слои (settings/base/layout/components/pages/utilities)
+ * будут внедрены на Шаге 9 рефакторинга.
  */
 
 /* Tailwind v3 */
@@ -9,30 +11,9 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* =========================================
-   1. SETTINGS — tokens, variables
-   ========================================= */
-@import './settings/colors.css';
-
-/* =========================================
-   2. BASE — resets, global elements
-   ========================================= */
-/* @import './base/reset.css'; */
-
-/* =========================================
-   3. LAYOUT — large page blocks
-   ========================================= */
-/* @import './layout/header.css'; */
-
-/* =========================================
-   4. COMPONENTS — reusable blocks
-   ========================================= */
-/* admin-bar moved to resources/admin/shared/ — loaded separately via @vite() */
-
-/* =========================================
-   5. PAGES — page-specific styles
-   ========================================= */
-
-/* =========================================
-   6. UTILITIES — helpers (last = highest priority)
-   ========================================= */
+/* Тематические модули — плоская структура */
+@import './admin-bar.css';
+@import './base.css';
+@import './layout.css';
+@import './posts.css';
+@import './components.css';
