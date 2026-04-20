@@ -5,7 +5,7 @@
         {{-- OnFlaude Menu --}}
         <div class="of-admin-bar__item of-admin-bar__item--dropdown">
             <button class="of-admin-bar__trigger">
-                <img src="{{ option('site_favicon') ? asset('storage/' . option('site_favicon')) : asset('themes/default/onflaude-favicon.svg') }}"
+                <img src="{{ option('site_favicon') ? asset('storage/' . option('site_favicon')) : asset('themes/default/assets/onflaude-favicon.svg') }}"
                      class="of-admin-bar__favicon" alt="OnFlaude">
             </button>
             <div class="of-admin-bar__dropdown">

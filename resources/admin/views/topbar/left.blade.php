@@ -1,7 +1,7 @@
 <div class="of-topbar-left">
     <a href="{{ option('site_url') ?: url('/') }}" target="_blank" class="of-topbar-site-link" title="Visit site">
         <img 
-            src="{{ option('site_favicon') ? asset('storage/' . option('site_favicon')) : asset('themes/default/onflaude-favicon.svg') }}" 
+            src="{{ option('site_favicon') ? asset('storage/' . option('site_favicon')) : asset('themes/default/assets/onflaude-favicon.svg') }}" 
             class="of-topbar-favicon" 
             alt="Site icon"
         >

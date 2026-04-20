@@ -25,12 +25,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path(option('admin_path', 'admin'))
             ->login()
-            ->brandLogo(asset('themes/default/onflaude-logo.png'))
+            ->brandLogo(asset('themes/default/assets/onflaude-logo.png'))
             ->brandLogoHeight('36px')
             ->favicon(
                 option('site_favicon') 
                     ? asset('storage/' . option('site_favicon'))
-                    : asset('themes/default/onflaude-favicon.svg')
+                    : asset('themes/default/assets/onflaude-favicon.svg')
             )
             ->renderHook(
                 'panels::page.start',
@@ -66,7 +66,7 @@ class AdminPanelProvider extends PanelProvider
             ')
             ->renderHook('panels::sidebar.nav.start', fn (): string => '
                 <img
-                    src="' . asset('themes/default/onflaude-favicon.svg') . '"
+                    src="' . asset('themes/default/assets/onflaude-favicon.svg') . '"
                     class="fi-brand-favicon"
                     style="width: 2.5rem; height: 2.5rem; margin: 0.5rem auto;"
                     alt="OnFlaude"
