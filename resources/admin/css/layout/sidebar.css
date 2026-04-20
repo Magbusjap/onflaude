@@ -1,0 +1,24 @@
+/*
+ * OnFlaude Admin — Sidebar Layout
+ *
+ * Left navigation sidebar: collapsed/expanded states.
+ */
+
+body.of-sidebar-collapsed {
+    & .fi-sidebar-nav {
+        @apply overflow-x-visible;
+    }
+
+    & .fi-sidebar-nav-groups {
+        @apply ml-0 mr-0 w-full;
+    }
+
+    & .fi-sidebar-group-items,
+    & .fi-sidebar-item {
+        @apply w-full;
+    }
+
+    & a.fi-sidebar-item-button {
+        @apply w-full flex;
+    }
+}
