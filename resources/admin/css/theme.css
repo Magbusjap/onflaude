@@ -1,263 +1,31 @@
+/*
+ * OnFlaude Admin — Main Stylesheet
+ *
+ * Точка входа CSS админки Filament. ITCSS-архитектура:
+ * settings -> tools -> base -> layout -> components -> pages -> utilities.
+ */
+
+/* Filament 3 base — должен быть ДО всех слоёв */
 @import '../../../vendor/filament/filament/resources/css/theme.css';
 
+/* 1. SETTINGS — CSS vars (пока пусто) */
+
+/* 2. TOOLS — mixins (пока пусто) */
+
+/* 3. BASE — глобальные Filament-overrides (пока пусто) */
+
+/* 4. LAYOUT — крупные блоки админки */
+@import './layout/sidebar.css';
+
+/* 5. COMPONENTS — переиспользуемые */
+@import './components/modal.css';
+@import './components/post-editor.css';
+@import './components/topbar.css';
+
+/* 6. PAGES — стили конкретных страниц */
+@import './pages/media-library.css';
+
+/* 7. UTILITIES — хелперы (пока пусто) */
+
+/* Tailwind config — в конце, чтобы utility-классы подхватили кастомы */
 @config '../tailwind.config.js';
-
-
-/* Media Library */
-.of-media-library { display: flex; flex-direction: column; gap: 0; }
-
-.of-ml-toolbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 0 14px;
-}
-.of-ml-heading { font-size: 18px; font-weight: 500; }
-.of-ml-count { font-size: 13px; color: var(--gray-400); margin-left: 10px; }
-
-.of-ml-upload-area {
-    background: var(--gray-50); border: 1px dashed var(--gray-300);
-    border-radius: 8px; padding: 16px; margin-bottom: 14px;
-}
-.of-ml-upload-actions { display: flex; gap: 8px; margin-top: 12px; }
-
-.of-ml-filters {
-    display: flex; align-items: center; gap: 8px;
-    padding-bottom: 14px; flex-wrap: wrap;
-}
-.of-ml-search {
-    padding: 6px 10px; border-radius: 6px;
-    border: 1px solid var(--gray-300); font-size: 13px;
-    background: var(--gray-50); flex: 1; min-width: 160px;
-    color: var(--gray-900);
-}
-.of-ml-select {
-    padding: 6px 10px; border-radius: 6px;
-    border: 1px solid var(--gray-300); font-size: 13px;
-    background: var(--gray-50); color: var(--gray-900);
-}
-
-.of-ml-body {
-    display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 0;
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    overflow: hidden;
-    min-height: 400px;
-}
-
-.of-ml-grid-area {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 2px;
-    padding: 10px;
-    overflow-y: auto;
-    align-content: start;
-    background: var(--gray-100);
-}
-
-.of-ml-item {
-    background: white;
-    border-radius: 6px;
-    cursor: pointer;
-    overflow: hidden;
-    border: 2px solid transparent;
-    transition: border-color 0.12s;
-}
-.of-ml-item:hover { border-color: var(--gray-300); }
-.of-ml-item--selected { border-color: #003893 !important; }
-
-.of-ml-thumb {
-    aspect-ratio: 1;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--gray-50);
-}
-.of-ml-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.of-ml-icon { font-size: 32px; line-height: 1; }
-
-.of-ml-item-name {
-    font-size: 10px; color: var(--gray-500);
-    padding: 4px 6px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    border-top: 1px solid var(--gray-100);
-}
-
-.of-ml-empty {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 40px;
-    color: var(--gray-400);
-    font-size: 14px;
-}
-
-/* Sidebar */
-.of-ml-sidebar {
-    border-left: 1px solid var(--gray-200);
-    background: white;
-    overflow-y: auto;
-}
-.of-ml-sidebar-empty {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    height: 100%; gap: 10px;
-    color: var(--gray-400); font-size: 13px;
-}
-.of-ml-sidebar-inner { padding: 14px; }
-
-.of-ml-sidebar-preview {
-    width: 100%; aspect-ratio: 1;
-    border-radius: 6px; overflow: hidden;
-    border: 1px solid var(--gray-200);
-    display: flex; align-items: center; justify-content: center;
-    background: var(--gray-50); margin-bottom: 12px;
-}
-.of-ml-sidebar-preview img { width: 100%; height: 100%; object-fit: contain; }
-
-.of-ml-meta { margin-bottom: 14px; }
-.of-ml-meta-badge {
-    display: inline-block; font-size: 11px;
-    padding: 2px 8px; border-radius: 99px;
-    margin-bottom: 10px;
-}
-.of-ml-meta-badge--image    { background: #E6F1FB; color: #0C447C; }
-.of-ml-meta-badge--document { background: #FAEEDA; color: #633806; }
-.of-ml-meta-badge--video    { background: #EAF3DE; color: #27500A; }
-.of-ml-meta-badge--audio    { background: #EEEDFE; color: #3C3489; }
-
-.of-ml-meta-row { margin-bottom: 8px; }
-.of-ml-meta-label {
-    display: block; font-size: 11px;
-    color: var(--gray-400); text-transform: uppercase;
-    letter-spacing: 0.04em; margin-bottom: 2px;
-}
-.of-ml-meta-val { font-size: 13px; color: var(--gray-800); word-break: break-all; }
-
-.of-ml-alt-group { margin-top: 10px; }
-.of-ml-alt-input {
-    width: 100%; font-size: 12px;
-    padding: 6px 8px; border-radius: 6px;
-    border: 1px solid var(--gray-300);
-    background: var(--gray-50); color: var(--gray-900);
-    margin-top: 4px;
-}
-
-.of-ml-sidebar-actions {
-    display: flex; flex-direction: column; gap: 6px;
-    padding-top: 10px; border-top: 1px solid var(--gray-100);
-}
-
-/* Buttons */
-.of-ml-btn {
-    font-size: 13px; padding: 6px 14px;
-    border-radius: 6px;
-    border: 1px solid var(--gray-300);
-    background: white; color: var(--gray-800);
-    cursor: pointer; text-align: center;
-    text-decoration: none; display: inline-block;
-}
-.of-ml-btn:hover { background: var(--gray-50); }
-.of-ml-btn-primary { background: #003893; color: white; border-color: #003893; }
-.of-ml-btn-primary:hover { background: #002d7a; }
-.of-ml-btn-danger { color: #A32D2D; border-color: #F7C1C1; }
-.of-ml-btn-danger:hover { background: #FCEBEB; }
-.of-ml-btn-full { width: 100%; }
-
-
-
-
-
-/* ===== Media Library: Resize Handle ===== */
-.of-ml-resize-handle {
-    width: 12px;
-    background: var(--gray-200, #e5e7eb);
-    cursor: col-resize;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: background 0.15s;
-}
-
-.of-ml-resize-handle:hover,
-.of-ml-resize-handle--active {
-    background: #0097D7;
-}
-
-.of-ml-resize-handle__icon {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--gray-400, #9ca3af);
-    letter-spacing: -3px;
-    line-height: 1;
-    pointer-events: none;
-    transition: color 0.15s;
-}
-
-.of-ml-resize-handle:hover .of-ml-resize-handle__icon,
-.of-ml-resize-handle--active .of-ml-resize-handle__icon {
-    color: #fff;
-}
-
-/* ===== Media Library: Sidebar responsive layout ===== */
-.of-ml-sidebar-meta--wide {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 16px;
-}
-
-.of-ml-sidebar-fields--wide {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
-
-
-
-
-
-
-
-
-/* === Modal positioning === */
-.fi-modal-window {
-    max-width: min(1300px, calc(100vw - 280px - 100px)) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-.fi-modal {
-    z-index: 9999 !important;
-}
-
-
-
-
-/* === Sticky sidebar in post edit === */
-@layer utilities {
-    .fi-fo-component-ctn > [style*="--col-span-default: span 1 / span 1"]:last-child {
-        position: sticky;
-        top: 1rem;
-        max-height: calc(100vh - 2rem);
-        overflow-y: auto;
-        align-self: start;
-    }
-}
-
-
-
-/* ===  Alpine.js toggle  === */
-@layer utilities {
-    body[data-sidebar-hidden] .fi-fo-component-ctn > [style*="--col-span-default: span 1 / span 1"]:last-child {
-        display: none;
-    }
-
-    body[data-sidebar-hidden] .fi-fo-component-ctn > [style*="--col-span-default: span 2 / span 2"] {
-        grid-column: 1 / -1;
-    }
-}
-
-
-
-
