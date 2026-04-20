@@ -28,7 +28,7 @@ class MediaLibrary extends Page implements HasForms
     protected static ?string $title = 'Media Library';
     protected static ?string $navigationGroup = 'Content';
     protected static ?int $navigationSort = 3;
-    protected static string $view = 'filament.pages.media-library';
+    protected static string $view = 'admin::pages.media-library';
 
     public ?int $selectedId = null;
     public string $search = '';
