@@ -83,7 +83,7 @@ class PostResource extends Resource
                                             ->schema([
                                                 Forms\Components\Hidden::make('media_id'),
                                                 Forms\Components\ViewField::make('media_preview')
-                                                    ->view('filament.forms.components.builder-image-picker')
+                                                    ->view('admin::forms.components.builder-image-picker')
                                                     ->dehydrated(false)
                                                     ->live()
                                                     ->viewData(fn (Forms\Get $get) => ['mediaUrl' => \App\Models\Media::find($get('media_id'))?->url ?? '']),
@@ -106,7 +106,7 @@ class PostResource extends Resource
                                             ->schema([
                                                 Forms\Components\Hidden::make('media_id'),
                                                 Forms\Components\ViewField::make('media_preview')
-                                                    ->view('filament.forms.components.builder-image-picker')
+                                                    ->view('admin::forms.components.builder-image-picker')
                                                     ->dehydrated(false)
                                                     ->live()
                                                     ->viewData(fn (Forms\Get $get) => ['mediaUrl' => \App\Models\Media::find($get('media_id'))?->url ?? '']),
@@ -166,7 +166,7 @@ class PostResource extends Resource
                                     ->schema([
                                         Forms\Components\Hidden::make('featured_image_id'),
                                         Forms\Components\ViewField::make('featured_image_preview')
-                                            ->view('filament.forms.components.featured-image-preview')
+                                            ->view('admin::forms.components.featured-image-preview')
                                             ->dehydrated(false)
                                             ->live(),
                                     ]),
