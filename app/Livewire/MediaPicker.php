@@ -203,6 +203,6 @@ class MediaPicker extends Component
 
     public function render()
     {
-        return view('livewire.media-picker');
+        return view('admin::livewire.media-picker');
     }
 }
