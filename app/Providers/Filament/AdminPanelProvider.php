@@ -86,7 +86,7 @@ class AdminPanelProvider extends PanelProvider
                 view('admin::topbar.left')->render()
             )
             ->globalSearch(true)
-            ->viteTheme('resources/css/filament/admin/theme.css', 'build/filament')
+            ->viteTheme('resources/admin/css/theme.css', 'build/filament')
             ->globalSearchKeyBindings(['ctrl+k', 'cmd+k'])
             ->pages([
                 \App\Filament\Pages\MediaLibrary::class,
