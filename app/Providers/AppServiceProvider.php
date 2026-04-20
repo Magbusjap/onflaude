@@ -2,23 +2,43 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        $this->registerThemeViewNamespace();
+    }
+
+    /**
+     * Регистрирует namespace theme:: для Blade активной темы.
+     * Приоритет: themes/{active}/views -> themes/{fallback}/views
+     */
+    protected function registerThemeViewNamespace(): void
+    {
+        $themesPath = config('onflaude.paths.themes', base_path('themes'));
+        $active     = config('onflaude.theme.active', 'default');
+        $fallback   = config('onflaude.theme.fallback', 'default');
+
+        $paths = [];
+
+        if ($active && is_dir("{$themesPath}/{$active}/views")) {
+            $paths[] = "{$themesPath}/{$active}/views";
+        }
+
+        if ($fallback && $fallback !== $active && is_dir("{$themesPath}/{$fallback}/views")) {
+            $paths[] = "{$themesPath}/{$fallback}/views";
+        }
+
+        if (!empty($paths)) {
+            View::addNamespace('theme', $paths);
+        }
     }
 }
