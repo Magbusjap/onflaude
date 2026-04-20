@@ -7,7 +7,7 @@
     <meta name="description" content="@yield('description', '')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-white text-gray-900 min-h-screen flex flex-col">
+<body class="bg-white text-gray-900 min-h-screen flex flex-col @auth of-has-admin-bar @endauth">
 
     <header class="bg-[#003893] text-white py-4">
         <div class="max-w-5xl mx-auto px-6 flex items-center justify-between">
@@ -32,4 +32,6 @@
     </footer>
 
 </body>
+
+@include('theme::partials.admin-bar')
 </html>

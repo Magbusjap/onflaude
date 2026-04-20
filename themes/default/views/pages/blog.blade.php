@@ -1,4 +1,4 @@
-@extends('frontend.layout')
+@extends('theme::layout')
 
 @section('title', 'Blog — ' . option('site_name', 'OnFlaude'))
 

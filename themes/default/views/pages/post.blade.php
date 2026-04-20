@@ -1,4 +1,4 @@
-@extends('frontend.layout')
+@extends('theme::layout')
 
 @section('title', $post->seo_title ?? $post->title . ' — ' . option('site_name', 'OnFlaude'))
 @section('description', $post->seo_description ?? $post->excerpt)
