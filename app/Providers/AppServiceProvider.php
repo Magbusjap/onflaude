@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerThemeViewNamespace();
+        $this->registerAdminViewNamespace();
     }
 
     /**
@@ -39,6 +40,19 @@ class AppServiceProvider extends ServiceProvider
 
         if (!empty($paths)) {
             View::addNamespace('theme', $paths);
+        }
+    }
+
+    /**
+     * Регистрирует namespace admin:: для Blade админки Filament.
+     * Путь: resources/admin/views/
+     */
+    protected function registerAdminViewNamespace(): void
+    {
+        $adminViews = base_path('resources/admin/views');
+
+        if (is_dir($adminViews)) {
+            View::addNamespace('admin', $adminViews);
         }
     }
 }
