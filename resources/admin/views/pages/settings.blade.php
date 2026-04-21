@@ -1,3 +1,8 @@
+{{--
+    Filament admin — Settings page
+
+    UI over the options table.
+--}}
 <x-filament-panels::page>
     <x-filament-panels::form wire:submit="save">
         {{ $this->form }}

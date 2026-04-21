@@ -1,3 +1,8 @@
+{{--
+    Filament admin — Builder block image picker
+
+    Custom Filament form component used by PostResource Builder blocks.
+--}}
 <div
     x-data="{
         previewUrl: '',

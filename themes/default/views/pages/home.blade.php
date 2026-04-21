@@ -1,3 +1,8 @@
+{{--
+    Default theme — home page
+
+    Rendered for /. Vars: $page, $posts.
+--}}
 @extends('theme::layout')
 
 @section('title', option('site_name', 'OnFlaude'))

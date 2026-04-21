@@ -1,3 +1,8 @@
+{{--
+    Default theme — generic CMS page
+
+    Rendered for /{slug} when a Page matches. Vars: $page.
+--}}
 @extends('theme::layout')
 
 @section('title', $page->seo_title ?? $page->title . ' — ' . option('site_name', 'OnFlaude'))

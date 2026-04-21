@@ -1,3 +1,8 @@
+{{--
+    Filament admin — Media Library page
+
+    View for App\Filament\Pages\MediaLibrary.
+--}}
 <x-filament-panels::page>
 <div>
     {{-- Toolbar --}}

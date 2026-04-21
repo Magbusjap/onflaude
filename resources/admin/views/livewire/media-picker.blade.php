@@ -1,3 +1,8 @@
+{{--
+    Filament admin — Media Picker (Livewire)
+
+    Render template for App\Livewire\MediaPicker.
+--}}
 <div class="flex flex-col h-full" style="min-height: 500px;">
 
     {{-- Tabs --}}

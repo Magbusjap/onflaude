@@ -1,3 +1,8 @@
+{{--
+    Default theme — single post
+
+    Rendered for /blog/{slug}. Vars: $post.
+--}}
 @extends('theme::layout')
 
 @section('title', $post->seo_title ?? $post->title . ' — ' . option('site_name', 'OnFlaude'))

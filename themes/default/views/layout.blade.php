@@ -1,3 +1,8 @@
+{{--
+    Default theme — base layout
+
+    Wraps every theme:: page. Loads Vite bundle, site title from options.
+--}}
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,3 +1,8 @@
+{{--
+    Default theme — blog index
+
+    Rendered for /blog. Vars: $posts (paginated).
+--}}
 @extends('theme::layout')
 
 @section('title', 'Blog — ' . option('site_name', 'OnFlaude'))

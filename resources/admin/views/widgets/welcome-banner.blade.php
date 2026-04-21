@@ -1,3 +1,8 @@
+{{--
+    Filament admin — Welcome Banner widget
+
+    Dashboard greeting widget.
+--}}
 @if($visible)
 <div class="of-welcome">
     <div class="of-welcome__inner">
