@@ -1,8 +1,8 @@
 /**
  * OnFlaude Default Theme — Bootstrap
  *
- * Настройка axios как HTTP-клиента по умолчанию и AJAX-заголовков
- * требуемых Laravel (CSRF, X-Requested-With).
+ * Configures axios as the default HTTP client and sets AJAX headers
+ * required by Laravel (CSRF, X-Requested-With).
  *
  * @module bootstrap
  */

@@ -2,11 +2,11 @@
 
 /*
 |--------------------------------------------------------------------------
-| OnFlaude CMS — настройки платформы
+| OnFlaude CMS — Platform configuration
 |--------------------------------------------------------------------------
 |
-| Конфигурация путей, активной темы и локали. Используется ядром и
-| расширениями (темами, плагинами, Python-сервисами).
+| Paths, active theme and locale. Consumed by the core and by extensions
+| (themes, plugins, Python services).
 |
 */
 
@@ -27,7 +27,7 @@ return [
     ],
 
     'locale' => [
-        'default'  => 'ru',
+        'default'  => 'en',
         'fallback' => 'en',
     ],
 

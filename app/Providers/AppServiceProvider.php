@@ -19,8 +19,8 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Регистрирует namespace theme:: для Blade активной темы.
-     * Приоритет: themes/{active}/views -> themes/{fallback}/views
+     * Registers the theme:: Blade namespace for the active theme.
+     * Resolution order: themes/{active}/views -> themes/{fallback}/views.
      */
     protected function registerThemeViewNamespace(): void
     {
@@ -44,8 +44,8 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Регистрирует namespace admin:: для Blade админки Filament.
-     * Путь: resources/admin/views/
+     * Registers the admin:: Blade namespace for the Filament admin panel.
+     * Path: resources/admin/views/.
      */
     protected function registerAdminViewNamespace(): void
     {

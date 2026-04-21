@@ -2,9 +2,8 @@
  * ITCSS Layer: pages
  * Component:   Media Library
  *
- * Стили страницы /magbusjap/media — панель загрузки, сетка медиа,
- * сайдбар с метаданными, resize handle, кнопки. Все классы
- * с префиксом .of-ml-*.
+ * Styles for the /magbusjap/media page: upload panel, media grid,
+ * metadata sidebar, resize handle, buttons. All classes prefixed .of-ml-*.
  */
 
 /* Media Library */

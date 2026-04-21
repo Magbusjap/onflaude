@@ -1,12 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        // Active theme + любые будущие темы
+        // Active theme and any future themes
         './themes/**/*.blade.php',
         './themes/**/*.js',
-        // Server-side Blade (recovery, welcome, filament custom)
+        // System Blade (recovery, welcome, custom Filament views)
         './resources/views/**/*.blade.php',
-        // Динамический контент и PHP-классы которые могут выдавать HTML
+        // Dynamic content and PHP classes that may emit HTML
         './app/**/*.php',
     ],
     theme: {

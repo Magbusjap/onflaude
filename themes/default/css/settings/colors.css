@@ -1,15 +1,18 @@
 /*
- * Settings — Colors
+ * ITCSS Layer: settings
+ * Block:       Colours
  *
- * Палитра OnFlaude как CSS custom properties.
- * Эти же цвета продублированы в tailwind.config.js как utility-классы
- * (bg-onflaude-dark, text-onflaude-light, ...) — два способа применения:
- *   - CSS vars: var(--of-color-brand-dark)  — для ручных правил в этом CSS
- *   - Tailwind utils: bg-onflaude-dark      — для Blade-шаблонов
+ * OnFlaude default-theme colour palette as CSS custom properties.
  *
- * При смене значения — менять в двух местах одновременно:
- *   themes/default/css/settings/colors.css  (здесь)
- *   tailwind.config.js                      (в корне репо)
+ * The same brand colours are duplicated in tailwind.config.js as
+ * utility classes (bg-onflaude-dark, text-onflaude-light, ...).
+ * Two ways to apply them:
+ *   - CSS vars:      var(--of-color-brand-dark)  for hand-written CSS in this theme
+ *   - Tailwind utils: bg-onflaude-dark            for Blade templates
+ *
+ * When changing a value — update both files in sync:
+ *   themes/default/css/settings/colors.css  (here)
+ *   tailwind.config.js                      (repo root)
  */
 :root {
     /* Brand */
@@ -17,7 +20,7 @@
     --of-color-brand-light:  #0097D7;
 
     /* UI */
-    --of-color-admin-bar:    #DCEBF2;
+    --of-color-admin-bar:        #DCEBF2;
     --of-color-admin-bar-border: #c5dbe8;
     --of-color-admin-bar-hover:  #b8d0de;
 }

@@ -1,14 +1,14 @@
 import preset from '../../vendor/filament/filament/tailwind.config.preset'
 
 /**
- * Tailwind-конфиг админки OnFlaude (Filament 3).
+ * Tailwind config — OnFlaude admin (Filament 3).
  *
- * Отдельный конфиг от themes/default (v3 через PostCSS) — админка
- * строится через собственный Vite-конфиг (vite.filament.config.js)
- * и use preset'а Filament.
+ * Separate from themes/default's config (v3 via PostCSS) because the
+ * admin is built through its own Vite config (vite.filament.config.js)
+ * and uses the official Filament preset.
  *
- * Content охватывает PHP-классы Filament (Resources/Pages/Widgets),
- * кастомные Blade в resources/admin/views/ и vendor Filament'а.
+ * Content covers Filament PHP classes (Resources/Pages/Widgets),
+ * custom admin Blade in resources/admin/views/ and Filament vendor.
  */
 export default {
     presets: [preset],

@@ -2,8 +2,8 @@
  * ITCSS Layer: components
  * Component:   Modal
  *
- * Корректировки позиционирования модалок Filament:
- * центрирование, ширина, z-index поверх sidebar/topbar.
+ * Filament modal positioning overrides: centering, width,
+ * z-index stacking above sidebar/topbar.
  */
 
 /* === Modal positioning === */

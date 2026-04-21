@@ -2,7 +2,7 @@
     "name": "Default",
     "slug": "default",
     "version": "1.0.0",
-    "description": "Дефолтная тема OnFlaude CMS. Плоская структура (без resources/), ITCSS-архитектура CSS, Tailwind v3.",
+    "description": "Default theme for OnFlaude CMS. Flat structure (no resources/ wrapper), ITCSS CSS architecture, Tailwind v3.",
     "author": {
         "name": "Mikhail Bozheslav",
         "url": "https://bozheslav.ru"

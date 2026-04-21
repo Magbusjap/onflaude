@@ -1,10 +1,10 @@
 /*
  * ITCSS Layer: components
- * Component:   Post Editor (правая панель Filament-формы)
+ * Component:   Post Editor (Filament form right column)
  *
- * Sticky sidebar для колонки span-1 (метаданные поста) +
- * Alpine.js toggle через body[data-sidebar-hidden]: скрытие
- * правой колонки и раскрытие левой на всю ширину.
+ * Sticky sidebar for the span-1 metadata column plus an
+ * Alpine.js toggle via body[data-sidebar-hidden]: hides the right
+ * column and expands the left column to full width.
  */
 
 /* === Sticky sidebar in post edit === */
