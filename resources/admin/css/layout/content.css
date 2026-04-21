@@ -1,0 +1,18 @@
+/*
+ * ITCSS Layer: layout
+ * Block:       Content area
+ *
+ * Background colour for the main admin content surface.
+ */
+
+/* Background for the entire content area */
+.fi-main,
+.fi-body,
+body {
+    background-color: #f2f2f4 !important;
+}
+
+.fi-main-ctn {
+    background-color: #f2f2f4 !important;
+    min-height: 100vh !important;
+}

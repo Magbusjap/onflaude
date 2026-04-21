@@ -1,3 +1,8 @@
+{{--
+    Filament admin — Featured image preview
+
+    Custom Filament form component for the post sidebar featured image.
+--}}
 <div
     x-data="{
         previewUrl: '',

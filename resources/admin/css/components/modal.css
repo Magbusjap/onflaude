@@ -1,0 +1,20 @@
+/*
+ * ITCSS Layer: components
+ * Component:   Modal
+ *
+ * Filament modal positioning overrides: centering, width,
+ * z-index stacking above sidebar/topbar.
+ */
+
+/* === Modal positioning === */
+.fi-modal-window {
+    max-width: min(1300px, calc(100vw - 280px - 100px)) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.fi-modal {
+    z-index: 9999 !important;
+}
+
+

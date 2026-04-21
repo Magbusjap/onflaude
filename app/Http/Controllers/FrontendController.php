@@ -19,7 +19,7 @@ class FrontendController extends Controller
             ->take(6)
             ->get();
 
-        return view('frontend.home', compact('page', 'posts'));
+        return view('theme::pages.home', compact('page', 'posts'));
     }
 
     public function posts()
@@ -29,7 +29,7 @@ class FrontendController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(10);
 
-        return view('frontend.posts', compact('posts'));
+        return view('theme::pages.blog', compact('posts'));
     }
 
     public function post(string $slug)
@@ -39,7 +39,7 @@ class FrontendController extends Controller
             ->with(['author', 'categories', 'tags'])
             ->firstOrFail();
 
-        return view('frontend.post', compact('post'));
+        return view('theme::pages.post', compact('post'));
     }
 
     public function category(string $slug)
@@ -52,7 +52,7 @@ class FrontendController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(option('posts_per_page', 10));
 
-        return view('frontend.category', compact('category', 'posts'));
+        return view('theme::pages.category', compact('category', 'posts'));
     }
 
     public function tag(string $slug)
@@ -65,7 +65,7 @@ class FrontendController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(option('posts_per_page', 10));
 
-        return view('frontend.tag', compact('tag', 'posts'));
+        return view('theme::pages.tag', compact('tag', 'posts'));
     }
 
     // Slug = URL friendly string, e.g. "about-us", "contact", "services"
@@ -75,6 +75,6 @@ class FrontendController extends Controller
             ->where('status', 'published')
             ->firstOrFail();
 
-        return view('frontend.page', compact('page'));
+        return view('theme::pages.page', compact('page'));
     }
 }

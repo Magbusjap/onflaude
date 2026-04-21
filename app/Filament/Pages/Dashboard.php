@@ -9,7 +9,7 @@ use Livewire\Attributes\Renderless;
 
 class Dashboard extends BaseDashboard
 {
-    protected static string $view = 'filament.pages.dashboard';
+    protected static string $view = 'admin::pages.dashboard';
 
     public function getWidgets(): array
     {

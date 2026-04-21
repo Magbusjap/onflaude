@@ -1,3 +1,8 @@
+{{--
+    Filament admin — Media Library page
+
+    View for App\Filament\Pages\MediaLibrary.
+--}}
 <x-filament-panels::page>
 <div>
     {{-- Toolbar --}}
@@ -225,7 +230,7 @@
                 @endforelse
             </div>
 
-            {{-- Pagination (без изменений) --}}
+            {{-- Pagination (unchanged) --}}
             @if($this->totalPages > 1)
             <div class="flex items-center justify-center gap-1 py-2.5 border-t border-gray-200 bg-gray-100">
                 <button wire:click="goToPage({{ $currentPage - 1 }})"
@@ -274,7 +279,7 @@
             <div class="of-ml-resize-handle__icon">‹›</div>
         </div>
 
-        {{-- Sidebar (без изменений) --}}
+        {{-- Sidebar (unchanged) --}}
         <div class="bg-white overflow-y-auto flex-shrink-0"
             style="container-type: inline-size; container-name: of-sidebar;"
             :style="'width:' + sidebarWidth + 'px'">

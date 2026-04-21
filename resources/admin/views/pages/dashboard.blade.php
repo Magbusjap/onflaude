@@ -1,3 +1,8 @@
+{{--
+    Filament admin — Dashboard page
+
+    View for App\Filament\Pages\Dashboard.
+--}}
 <x-filament-panels::page>
 <div x-data="{ screenOpen: false }" style="position: relative;">
 

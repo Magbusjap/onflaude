@@ -1,3 +1,8 @@
+{{--
+    Default theme — category archive
+
+    Rendered for /category/{slug}. Vars: $category, $posts.
+--}}
 @extends('theme::layout')
 
 @section('title', $category->name . ' — ' . option('site_name', 'OnFlaude'))

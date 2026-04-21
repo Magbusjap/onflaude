@@ -13,6 +13,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
@@ -25,12 +26,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path(option('admin_path', 'admin'))
             ->login()
-            ->brandLogo(asset('themes/default/onflaude-logo.png'))
+            ->brandLogo(asset('themes/default/assets/onflaude-logo.png'))
             ->brandLogoHeight('36px')
             ->favicon(
                 option('site_favicon') 
                     ? asset('storage/' . option('site_favicon'))
-                    : asset('themes/default/onflaude-favicon.svg')
+                    : asset('themes/default/assets/onflaude-favicon.svg')
             )
             ->renderHook(
                 'panels::page.start',
@@ -66,27 +67,23 @@ class AdminPanelProvider extends PanelProvider
             ')
             ->renderHook('panels::sidebar.nav.start', fn (): string => '
                 <img
-                    src="' . asset('themes/default/onflaude-favicon.svg') . '"
+                    src="' . asset('themes/default/assets/onflaude-favicon.svg') . '"
                     class="fi-brand-favicon"
                     style="width: 2.5rem; height: 2.5rem; margin: 0.5rem auto;"
                     alt="OnFlaude"
                 >
             ')
-            ->renderHook('panels::head.end', fn (): string =>
-                '<link rel="stylesheet" href="' . asset('css/filament/index.css') . '?v=' . 
-                filemtime(public_path('css/filament/index.css')) . '">' .
-                '<link rel="stylesheet" href="' . asset('css/filament/onflaude.css') . '">'
-            )
             ->renderHook('panels::body.end', fn (): string =>
-                '<script src="' . asset('js/filament/onflaude.js') . '?v=' . filemtime(public_path('js/filament/onflaude.js')) . '"></script>' .
-                '<script type="module" src="' . asset('js/filament/index.js') . '?v=' . filemtime(public_path('js/filament/index.js')) . '"></script>'
+                Vite::useBuildDirectory('build/filament')
+                    ->withEntryPoints(['resources/admin/js/index.js'])
+                    ->toHtml()
             )
 
             ->renderHook('panels::topbar.start', fn (): string => 
-                view('filament.topbar.left')->render()
+                view('admin::topbar.left')->render()
             )
             ->globalSearch(true)
-            ->viteTheme('resources/css/filament/admin/theme.css', 'build/filament')
+            ->viteTheme('resources/admin/css/theme.css', 'build/filament')
             ->globalSearchKeyBindings(['ctrl+k', 'cmd+k'])
             ->pages([
                 \App\Filament\Pages\MediaLibrary::class,

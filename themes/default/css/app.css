@@ -1,38 +1,21 @@
 /*
  * OnFlaude Default Theme — Main Stylesheet
  *
- * Entry point for the default theme. Imports Tailwind v3 and ITCSS layers.
+ * ITCSS architecture:
+ * settings -> tools -> base -> layout -> components -> pages -> utilities.
  */
 
-/* Tailwind v3 */
+/* Tailwind v3 — utilities layer isolates utility classes */
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* =========================================
-   1. SETTINGS — tokens, variables
-   ========================================= */
+/* 1. SETTINGS — tokens, variables */
 @import './settings/colors.css';
 
-/* =========================================
-   2. BASE — resets, global elements
-   ========================================= */
-/* @import './base/reset.css'; */
-
-/* =========================================
-   3. LAYOUT — large page blocks
-   ========================================= */
-/* @import './layout/header.css'; */
-
-/* =========================================
-   4. COMPONENTS — reusable blocks
-   ========================================= */
-/* admin-bar moved to resources/admin/shared/ — loaded separately via @vite() */
-
-/* =========================================
-   5. PAGES — page-specific styles
-   ========================================= */
-
-/* =========================================
-   6. UTILITIES — helpers (last = highest priority)
-   ========================================= */
+/* 2. TOOLS — mixins (empty) */
+/* 3. BASE — resets, global elements (empty) */
+/* 4. LAYOUT — large page blocks (empty) */
+/* 5. COMPONENTS — reusable blocks (empty) */
+/* 6. PAGES — page-specific styles (empty) */
+/* 7. UTILITIES — helpers (empty) */

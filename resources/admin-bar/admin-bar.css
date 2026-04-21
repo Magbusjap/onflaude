@@ -1,0 +1,112 @@
+/*
+ * OnFlaude Admin Bar — Styles
+ *
+ * Floating top toolbar shown on the public site for authenticated users.
+ * Inlined into <head> by App\Http\Middleware\InjectAdminBar — the file
+ * itself is NOT served as a public asset.
+ *
+ * Themes do not load this file. It is platform-level, not theme-level.
+ */
+
+.of-admin-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    height: 32px;
+    background: #DCEBF2;
+    border-bottom: 1px solid #c5dbe8;
+}
+
+.of-admin-bar__inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 8px;
+    gap: 0;
+}
+
+.of-admin-bar__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    padding: 0 10px;
+    font-size: 0.8rem;
+    color: #374151;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+.of-admin-bar__item:hover,
+.of-admin-bar__item--dropdown:hover {
+    background: #b8d0de;
+}
+
+.of-admin-bar__trigger {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    padding: 0 10px;
+    font-size: 0.8rem;
+    color: #374151;
+    background: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.of-admin-bar__favicon {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+}
+
+.of-admin-bar__dropdown {
+    display: none;
+    position: absolute;
+    top: 32px;
+    left: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-width: 160px;
+    z-index: 10000;
+}
+
+.of-admin-bar__item--dropdown:hover .of-admin-bar__dropdown {
+    display: block;
+}
+
+.of-admin-bar__dropdown a {
+    display: block;
+    padding: 7px 14px;
+    font-size: 0.8rem;
+    color: #374151;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.of-admin-bar__dropdown a:hover {
+    background: #f3f4f6;
+}
+
+.of-admin-bar__item--edit {
+    margin-left: auto;
+    color: #003893;
+    font-weight: 500;
+}
+
+/* Theme-independent offset: push page content below the fixed toolbar.
+   Uses :has() so any theme that renders the bar is spaced correctly
+   without having to add a marker class on <body>. */
+body:has(> .of-admin-bar) > header,
+body:has(> .of-admin-bar) > main:first-of-type {
+    margin-top: 32px;
+}

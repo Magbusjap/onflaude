@@ -1,3 +1,8 @@
+{{--
+    Default theme — tag archive
+
+    Rendered for /tag/{slug}. Vars: $tag, $posts.
+--}}
 @extends('theme::layout')
 
 @section('title', '#' . $tag->name . ' — ' . option('site_name', 'OnFlaude'))
