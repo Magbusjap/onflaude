@@ -130,9 +130,9 @@ Just replace the PNG with the same filename and commit. The README reference sta
 
 | File | Status |
 |---|---|
-| `dashboard.png` | 🚧 not yet captured |
+| `dashboard.png` | ✅ captured |
 | `post-editor.png` | 🚧 not yet captured |
-| `media-library.png` | 🚧 not yet captured |
+| `media-library.png` | ✅ captured |
 | `settings.png` | 🚧 not yet captured |
 | `frontend.png` | 🚧 not yet captured |
 
