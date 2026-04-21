@@ -1,3 +1,13 @@
+/*
+ * OnFlaude Admin Bar — Styles
+ *
+ * Floating top toolbar shown on the public site for authenticated users.
+ * Inlined into <head> by App\Http\Middleware\InjectAdminBar — the file
+ * itself is NOT served as a public asset.
+ *
+ * Themes do not load this file. It is platform-level, not theme-level.
+ */
+
 .of-admin-bar {
     position: fixed;
     top: 0;
@@ -93,7 +103,10 @@
     font-weight: 500;
 }
 
-/* Отступ для body чтобы контент не уходил под тулбар */
-.of-has-admin-bar header {
+/* Theme-independent offset: push page content below the fixed toolbar.
+   Uses :has() so any theme that renders the bar is spaced correctly
+   without having to add a marker class on <body>. */
+body:has(> .of-admin-bar) > header,
+body:has(> .of-admin-bar) > main:first-of-type {
     margin-top: 32px;
 }

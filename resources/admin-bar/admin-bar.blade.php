@@ -1,3 +1,17 @@
+{{--
+    OnFlaude Admin Bar (frontend toolbar)
+
+    Floating toolbar shown on the public site for authenticated users.
+    Mirrors WordPress' admin bar concept: quick links to admin panel,
+    page/post editing, content creation, and platform documentation.
+
+    Injected automatically into every theme by InjectAdminBar middleware
+    before </body>. Themes do not include or import this file directly.
+
+    Available view variables (injected by InjectAdminBar from the request):
+      - $post  (App\Models\Post|null) — current post on /blog/{slug} pages
+      - $page  (App\Models\Page|null) — current page on /{slug} routes
+--}}
 @auth
 <div class="of-admin-bar" id="of-admin-bar">
     <div class="of-admin-bar__inner">
