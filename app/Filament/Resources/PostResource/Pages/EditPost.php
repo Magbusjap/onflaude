@@ -46,7 +46,7 @@ class EditPost extends EditRecord
                 ->color('gray')
                 ->livewireClickHandlerEnabled(false)
                 ->extraAttributes([
-                    'x-on:click.stop.prevent' => 'ofToggleSidebar()',
+                    'x-on:click.stop.prevent' => 'ofTogglePostSidebar()',
                 ]),
         ];
     }

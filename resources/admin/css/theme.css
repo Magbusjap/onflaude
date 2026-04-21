@@ -1,7 +1,7 @@
 /*
  * OnFlaude Admin — Main Stylesheet
  *
- * Entry point for Filament admin CSS. ITCSS architecture:
+ * Entry point for the Filament admin CSS. ITCSS architecture:
  * settings -> tools -> base -> layout -> components -> pages -> utilities.
  */
 
@@ -10,23 +10,23 @@
 
 /* 1. SETTINGS — CSS vars (empty) */
 /* 2. TOOLS — mixins (empty) */
-/* 3. BASE — global Filament overrides (empty) */
 
-/* 4. LAYOUT — large admin blocks
- * NOTE: layout/sidebar.css NOT imported until legacy
- * public/css/filament/onflaude.css migrates here (Step 14).
- * Otherwise sidebar styling applies twice.
- */
+/* 3. BASE — global Filament overrides */
+@import './base/global.css';
 
-/* 5. COMPONENTS — reusable
- * NOTE: components/topbar.css NOT imported here; loaded via
- * panels::head.end renderHook from public/css/filament/.
- * Re-enable once renderHook is removed (Step 14).
- */
+/* 4. LAYOUT — large admin blocks */
+@import './layout/sidebar.css';
+@import './layout/topbar.css';
+@import './layout/content.css';
+
+/* 5. COMPONENTS — reusable */
 @import './components/modal.css';
 @import './components/post-editor.css';
+@import './components/topbar.css';
+@import './components/welcome-banner.css';
 
 /* 6. PAGES — page-specific styles */
+@import './pages/dashboard.css';
 @import './pages/media-library.css';
 
 /* 7. UTILITIES — helpers (empty) */

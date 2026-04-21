@@ -1,4 +1,10 @@
-/* Reset max-width */
+/*
+ * ITCSS Layer: base
+ * Block:       Global Filament overrides
+ *
+ * Reset Filament's max-width on main content containers so admin
+ * pages span full viewport width.
+ */
 
 .fi-main-ctn,
 .fi-page,

@@ -1,0 +1,93 @@
+/*
+ * ITCSS Layer: pages
+ * Page:        Dashboard
+ *
+ * Screen Options drop-shutter on the dashboard top — toggle widgets
+ * visibility, save layout. Markup in resources/admin/views/pages/dashboard.blade.php.
+ */
+
+/*-----------------------------------------------------------*/
+/* ===== filament.pages.dashboard ===========================*/
+/*-----------------------------------------------------------*/
+
+.of-screen-options {
+    background: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+
+.of-screen-options__title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.of-screen-options__list {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.of-screen-options__item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: #374151;
+    cursor: pointer;
+}
+
+.of-screen-options__save {
+    margin-left: auto;
+    background: #0097D7;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+}
+
+.of-screen-options__save:hover {
+    background: #0079b0;
+}
+
+.of-screen-options-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.of-screen-options-btn {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    color: #374151;
+    cursor: pointer;
+}
+
+.of-screen-options-btn:hover {
+    background: #f8f9fa;
+}
+
+.of-screen-options-toggle .of-screen-options-btn {
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    font-size: 0.875rem !important;
+    color: #374151 !important;
+    cursor: pointer !important;
+}
+
+.of-screen-options-toggle .of-screen-options-btn:hover {
+    background: #f8f9fa !important;
+}

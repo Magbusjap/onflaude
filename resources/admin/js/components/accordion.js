@@ -1,7 +1,14 @@
+/**
+ * Component: Sidebar Group Accordion
+ *
+ * Patches Filament's Alpine sidebar store so opening one navigation
+ * group automatically collapses the others (single-open accordion).
+ *
+ * @module components/accordion
+ */
 export function init() {
     window.addEventListener('alpine:initialized', function () {
         const sidebar = window.Alpine?.store('sidebar');
-
         if (!sidebar) return;
 
         const originalToggle = sidebar.toggleCollapsedGroup.bind(sidebar);

@@ -1,0 +1,19 @@
+/*
+ * ITCSS Layer: layout
+ * Block:       Topbar
+ *
+ * Filament topbar surface (background, border, link colours).
+ * Custom OnFlaude topbar additions (.of-topbar-*) live in
+ * components/topbar.css.
+ */
+
+.fi-topbar {
+    background-color: #dcebf2 !important;
+    border-bottom: none !important;
+}
+
+.fi-topbar nav,
+.fi-topbar button,
+.fi-topbar a {
+    color: #0097D7 !important;
+}

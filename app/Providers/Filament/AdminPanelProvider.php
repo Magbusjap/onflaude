@@ -13,6 +13,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
@@ -72,14 +73,10 @@ class AdminPanelProvider extends PanelProvider
                     alt="OnFlaude"
                 >
             ')
-            ->renderHook('panels::head.end', fn (): string =>
-                '<link rel="stylesheet" href="' . asset('css/filament/index.css') . '?v=' . 
-                filemtime(public_path('css/filament/index.css')) . '">' .
-                '<link rel="stylesheet" href="' . asset('css/filament/onflaude.css') . '">'
-            )
             ->renderHook('panels::body.end', fn (): string =>
-                '<script src="' . asset('js/filament/onflaude.js') . '?v=' . filemtime(public_path('js/filament/onflaude.js')) . '"></script>' .
-                '<script type="module" src="' . asset('js/filament/index.js') . '?v=' . filemtime(public_path('js/filament/index.js')) . '"></script>'
+                Vite::useBuildDirectory('build/filament')
+                    ->withEntryPoints(['resources/admin/js/index.js'])
+                    ->toHtml()
             )
 
             ->renderHook('panels::topbar.start', fn (): string => 

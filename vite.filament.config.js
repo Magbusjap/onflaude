@@ -2,19 +2,24 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
 /**
- * Vite-конфиг админки OnFlaude (Filament 3).
+ * Vite config — OnFlaude admin (Filament 3).
  *
- * Input: resources/admin/css/theme.css -> public/build/filament/
- * Tailwind v4 pipeline (через @tailwindcss/vite автоматически,
- * если директива @config загружает обычный JS-конфиг).
+ * Inputs:
+ *   - resources/admin/css/theme.css  -> ITCSS layered admin styles
+ *   - resources/admin/js/index.js    -> admin JS components
  *
- * Отдельно от vite.config.js (фронт) потому что Filament 3
- * строится по своему пути buildDirectory.
+ * Output: public/build/filament/
+ *
+ * Kept separate from vite.config.js (frontend theme) because Filament 3
+ * needs its own buildDirectory and asset resolver via viteTheme().
  */
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/admin/css/theme.css'],
+            input: [
+                'resources/admin/css/theme.css',
+                'resources/admin/js/index.js',
+            ],
             buildDirectory: 'build/filament',
         }),
     ],
