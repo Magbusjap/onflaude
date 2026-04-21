@@ -1,31 +1,35 @@
 /*
  * OnFlaude Admin — Main Stylesheet
  *
- * Точка входа CSS админки Filament. ITCSS-архитектура:
+ * Entry point for Filament admin CSS. ITCSS architecture:
  * settings -> tools -> base -> layout -> components -> pages -> utilities.
  */
 
-/* Filament 3 base — должен быть ДО всех слоёв */
+/* Filament 3 base — must come BEFORE any layer */
 @import '../../../vendor/filament/filament/resources/css/theme.css';
 
-/* 1. SETTINGS — CSS vars (пока пусто) */
+/* 1. SETTINGS — CSS vars (empty) */
+/* 2. TOOLS — mixins (empty) */
+/* 3. BASE — global Filament overrides (empty) */
 
-/* 2. TOOLS — mixins (пока пусто) */
+/* 4. LAYOUT — large admin blocks
+ * NOTE: layout/sidebar.css NOT imported until legacy
+ * public/css/filament/onflaude.css migrates here (Step 14).
+ * Otherwise sidebar styling applies twice.
+ */
 
-/* 3. BASE — глобальные Filament-overrides (пока пусто) */
-
-/* 4. LAYOUT — крупные блоки админки */
-@import './layout/sidebar.css';
-
-/* 5. COMPONENTS — переиспользуемые */
+/* 5. COMPONENTS — reusable
+ * NOTE: components/topbar.css NOT imported here; loaded via
+ * panels::head.end renderHook from public/css/filament/.
+ * Re-enable once renderHook is removed (Step 14).
+ */
 @import './components/modal.css';
 @import './components/post-editor.css';
-@import './components/topbar.css';
 
-/* 6. PAGES — стили конкретных страниц */
+/* 6. PAGES — page-specific styles */
 @import './pages/media-library.css';
 
-/* 7. UTILITIES — хелперы (пока пусто) */
+/* 7. UTILITIES — helpers (empty) */
 
-/* Tailwind config — в конце, чтобы utility-классы подхватили кастомы */
+/* Tailwind config — must be last so utilities pick up tokens */
 @config '../tailwind.config.js';
